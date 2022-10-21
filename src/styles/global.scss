@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import './variables';
+* {
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.05em;
+  border: none;
+  outline: none;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+  background-color: rgb(var(--bg-color));
+  margin: auto;
+}
+
+.page {
+  width: 100%;
+  height: 100%;
+}
+
+// EXTRA CLASSES
+.icon {
+  width: 25px;
+  height: 25px;
+  pointer-events: none;
+}
+
+.mt-1 {
+  margin-top: 0.2em;
+}
