@@ -1,7 +1,31 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import { goto } from '$app/navigation'
+  import Profile from '$lib/Profile.svelte'
+  import {
+    getAuth,
+    GoogleAuthProvider,
+    signInWithPopup,
+    FacebookAuthProvider,
+    signInAnonymously,
+    onAuthStateChanged,
+  } from 'firebase/auth'
   import { currentTrash } from '../stores'
+  let isProfile: boolean = false
+  const auth = getAuth()
+  let urlProfileImageUser: any = ''
+  let displayNameUser: string = ''
+  let emailProfileUser: string = ''
+  onMount(async () => {
+    document.body.addEventListener('click', () => {
+      isProfile = false
+    })
+    onAuthStateChanged(auth, (user) => {
+      urlProfileImageUser = user?.photoURL
+      displayNameUser = user?.displayName
+      emailProfileUser = user?.email
+    })
+  })
   let menu: any = null
   onMount(() => {
     menu = document.querySelector('.menu')
@@ -13,11 +37,26 @@
     currentTrash.set(trash)
     goto('/game')
   }
+  const toggleProfile = (event: any) => {
+    event.stopPropagation()
+    isProfile = !isProfile
+  }
 </script>
 
 <main class="page">
   <div class="card">
     <header>
+      <div class="profile" on:click={(event) => toggleProfile(event)}>
+        <Profile
+          {isProfile}
+          displayName={displayNameUser}
+          urlImageUser={urlProfileImageUser}
+          emailUser={emailProfileUser}
+          {auth}
+        />
+        <!-- svelte-ignore a11y-missing-attribute -->
+        <img src={urlProfileImageUser} />
+      </div>
       <div class="score">
         <h3>Score</h3>
         <h2>3200</h2>
@@ -768,8 +807,25 @@
         height: 90px;
         display: flex;
         align-items: center;
-        justify-content: flex-end;
+        justify-content: space-between;
         padding: 0.5em;
+        z-index: 100000;
+        & .profile {
+          position: relative;
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+          & img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            pointer-events: none;
+          }
+        }
         & .score {
           display: flex;
           align-items: center;

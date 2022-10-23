@@ -15,13 +15,10 @@
     isLoading = false
     const analytics = getAnalytics(app)
     onAuthStateChanged(auth, (user) => {
-      if (user) {
-        console.log(user)
-      } else {
+      if (!user) {
         goto('/login')
       }
     })
-    console.log(analytics)
   })
 </script>
 

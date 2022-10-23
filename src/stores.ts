@@ -21,3 +21,5 @@ export const trashItems = {
     plastic: ['gallonOfWater', 'bag', 'cup', 'cellPhone', '...'],
   },
 }
+
+export const connectionAPI = 'http://127.0.0.1:3333/'

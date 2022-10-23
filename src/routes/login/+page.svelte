@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte'
+  import { goto } from '$app/navigation'
   import {
     getAuth,
     GoogleAuthProvider,
@@ -8,22 +9,11 @@
     signInAnonymously,
     onAuthStateChanged,
   } from 'firebase/auth'
-  import Images from '../../lib/Images.svelte'
-
-  import { AddManualBtnsAnim } from '../../webkit-components/ButtunsAnimated'
-  import { goto } from '$app/navigation'
 
   const auth = getAuth()
   const googleProvider = new GoogleAuthProvider()
   const facebookProvider = new FacebookAuthProvider()
 
-  const animations = () => {
-    const buttonsAnimateds: any = document.querySelectorAll<HTMLElement>('.wk-btn-anim')!
-    AddManualBtnsAnim(buttonsAnimateds)
-  }
-  onMount(async () => {
-    animations()
-  })
   const googleLogin = () => {
     signInWithPopup(auth, googleProvider)
       .then((result) => {
