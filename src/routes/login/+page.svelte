@@ -1,6 +1,14 @@
 <script lang="ts">
+  type User = {
+    email: string
+    id: number
+    name: string
+    userProviderID: string
+  }
   import { onMount } from 'svelte'
   import { goto } from '$app/navigation'
+  import { connectionAPI } from '../../stores'
+  import axios from 'axios'
   import {
     getAuth,
     GoogleAuthProvider,
@@ -14,23 +22,41 @@
   const googleProvider = new GoogleAuthProvider()
   const facebookProvider = new FacebookAuthProvider()
 
+  const sendUserForAPI = async (
+    userName: string | null | undefined,
+    userEmail: string | null | undefined,
+    userID: string | null | undefined,
+  ): Promise<User | any> => {
+    return await axios
+      .post(`${connectionAPI}/handle-user`, {
+        userName,
+        userEmail,
+        userID,
+      })
+      .then((response: any) => {
+        return response.data.user
+      })
+      .catch((error: any) => {
+        return error
+      })
+  }
+
   const googleLogin = () => {
     signInWithPopup(auth, googleProvider)
       .then((result) => {
         const credential = GoogleAuthProvider.credentialFromResult(result)
         const user = result.user
-        console.log(user)
       })
       .catch((error) => {
         const errorCode = error.code
         const errorMessage = error.message
         const email = error.customData.email
         const credential = GoogleAuthProvider.credentialFromError(error)
-        console.log(errorMessage)
       })
   }
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
+  onAuthStateChanged(auth, async (user) => {
+    const userFromAPI = await sendUserForAPI(user?.displayName, user?.email, user?.uid)
+    if (userFromAPI) {
       goto('/')
     }
   })
@@ -1155,32 +1181,6 @@
       </div>
     </div>
   </div>
-
-  <!-- <div class="card">
-    <div class="card__logo">
-      <Images
-        src="https://cdn.jsdelivr.net/gh/franciscoJefersonDev/images-reciclage-game@master/logo2.svg"
-      />
-    </div>
-    <div class="title">
-      <h2>Login</h2>
-      <div class="separator" />
-    </div>
-    <div class="card__form">
-      <button class="button wk-btn-anim" on:click={() => googleLogin()}>
-        <ion-icon name="logo-google" />
-        Entrar com o Google
-      </button>
-      <button class="button wk-btn-anim" on:click={() => facebookLogin()}>
-        <ion-icon name="logo-facebook" />
-        Entrar com o Facebook
-      </button>
-      <button class="button wk-btn-anim" on:click={() => anonymousLogin()}>
-        <ion-icon name="person-circle-outline" />
-        Entrar como Anônimo
-      </button>
-    </div>
-  </div> -->
 </main>
 
 <style lang="scss">

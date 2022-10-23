@@ -22,4 +22,4 @@ export const trashItems = {
   },
 }
 
-export const connectionAPI = 'http://127.0.0.1:3333/'
+export const connectionAPI = 'http://127.0.0.1:3000'

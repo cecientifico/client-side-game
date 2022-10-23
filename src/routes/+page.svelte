@@ -1,46 +1,52 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
-  import { goto } from '$app/navigation'
-  import Profile from '$lib/Profile.svelte'
-  import {
-    getAuth,
-    GoogleAuthProvider,
-    signInWithPopup,
-    FacebookAuthProvider,
-    signInAnonymously,
-    onAuthStateChanged,
-  } from 'firebase/auth'
-  import { currentTrash } from '../stores'
-  let isProfile: boolean = false
-  const auth = getAuth()
-  let urlProfileImageUser: any = ''
-  let displayNameUser: string = ''
-  let emailProfileUser: string = ''
+  import { onMount } from "svelte";
+  import { goto } from "$app/navigation";
+  import Profile from "$lib/Profile.svelte";
+  import { getAuth, onAuthStateChanged } from "firebase/auth";
+  import axios from "axios";
+  import { currentTrash, connectionAPI } from "../stores";
+
+  let isProfile: boolean = false;
+  const auth = getAuth();
+  let urlProfileImageUser: any = "";
+  let displayNameUser: string = "";
+  let emailProfileUser: string = "";
+  let scoreLoaded: boolean = false;
+  let lastResult: number = 0;
   onMount(async () => {
-    document.body.addEventListener('click', () => {
-      isProfile = false
-    })
+    document.body.addEventListener("click", () => {
+      isProfile = false;
+    });
     onAuthStateChanged(auth, (user) => {
-      urlProfileImageUser = user?.photoURL
-      displayNameUser = user?.displayName
-      emailProfileUser = user?.email
-    })
-  })
-  let menu: any = null
+      urlProfileImageUser = user?.photoURL;
+      displayNameUser = user?.displayName || "";
+      emailProfileUser = user?.email || "";
+      axios
+        .get(`${connectionAPI}/user-results/${user?.uid}`)
+        .then((response: any) => {
+          lastResult = response.data.result.results[0].results;
+          scoreLoaded = true;
+        })
+        .catch((error: any) => {
+          scoreLoaded = true;
+        });
+    });
+  });
+  let menu: any = null;
   onMount(() => {
-    menu = document.querySelector('.menu')
-  })
+    menu = document.querySelector(".menu");
+  });
   const active = () => {
-    menu.classList.toggle('active')
-  }
+    menu.classList.toggle("active");
+  };
   const setTrash = (trash: string) => {
-    currentTrash.set(trash)
-    goto('/game')
-  }
+    currentTrash.set(trash);
+    goto("/game");
+  };
   const toggleProfile = (event: any) => {
-    event.stopPropagation()
-    isProfile = !isProfile
-  }
+    event.stopPropagation();
+    isProfile = !isProfile;
+  };
 </script>
 
 <main class="page">
@@ -58,8 +64,18 @@
         <img src={urlProfileImageUser} />
       </div>
       <div class="score">
-        <h3>Score</h3>
-        <h2>3200</h2>
+        {#if !scoreLoaded}
+          <div class="loading">
+            <div class="ball ball-ne" />
+            <div class="ball ball-nw" />
+            <div class="ball ball-sw" />
+            <div class="ball ball-se" />
+          </div>
+        {/if}
+        {#if scoreLoaded}
+          <h3>Score</h3>
+          <h2>{lastResult}</h2>
+        {/if}
       </div>
     </header>
     <svg
@@ -280,7 +296,14 @@
             fill="url(#paint0_radial_26_1734)"
           />
           <g filter="url(#filter0_f_26_1734)">
-            <ellipse cx="108" cy="174" rx="56" ry="13" fill="black" fill-opacity="0.29" />
+            <ellipse
+              cx="108"
+              cy="174"
+              rx="56"
+              ry="13"
+              fill="black"
+              fill-opacity="0.29"
+            />
           </g>
           <path
             d="M41.9835 40.7343C40.9337 32.9358 46.9984 26 54.8673 26H160.085C167.971 26 174.04 32.9634 172.964 40.7749L155.047 170.775C154.16 177.208 148.663 182 142.169 182H72.3673C65.8579 182 60.3519 177.186 59.4835 170.734L41.9835 40.7343Z"
@@ -341,8 +364,16 @@
               color-interpolation-filters="sRGB"
             >
               <feFlood flood-opacity="0" result="BackgroundImageFix" />
-              <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-              <feGaussianBlur stdDeviation="6.5" result="effect1_foregroundBlur_26_1734" />
+              <feBlend
+                mode="normal"
+                in="SourceGraphic"
+                in2="BackgroundImageFix"
+                result="shape"
+              />
+              <feGaussianBlur
+                stdDeviation="6.5"
+                result="effect1_foregroundBlur_26_1734"
+              />
             </filter>
             <radialGradient
               id="paint0_radial_26_1734"
@@ -468,7 +499,14 @@
               fill="url(#paint0_radial_26_1734)"
             />
             <g filter="url(#filter0_f_26_1734)">
-              <ellipse cx="108" cy="174" rx="56" ry="13" fill="black" fill-opacity="0.29" />
+              <ellipse
+                cx="108"
+                cy="174"
+                rx="56"
+                ry="13"
+                fill="black"
+                fill-opacity="0.29"
+              />
             </g>
             <path
               d="M41.9835 40.7343C40.9337 32.9358 46.9984 26 54.8673 26H160.085C167.971 26 174.04 32.9634 172.964 40.7749L155.047 170.775C154.16 177.208 148.663 182 142.169 182H72.3673C65.8579 182 60.3519 177.186 59.4835 170.734L41.9835 40.7343Z"
@@ -529,8 +567,16 @@
                 color-interpolation-filters="sRGB"
               >
                 <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-                <feGaussianBlur stdDeviation="6.5" result="effect1_foregroundBlur_26_1734" />
+                <feBlend
+                  mode="normal"
+                  in="SourceGraphic"
+                  in2="BackgroundImageFix"
+                  result="shape"
+                />
+                <feGaussianBlur
+                  stdDeviation="6.5"
+                  result="effect1_foregroundBlur_26_1734"
+                />
               </filter>
               <radialGradient
                 id="paint0_radial_26_1734"
@@ -586,7 +632,11 @@
                 gradientUnits="userSpaceOnUse"
               >
                 <stop stop-color="#747474" stop-opacity="0.29" />
-                <stop offset="0.50868" stop-color="#7F7F7F" stop-opacity="0.17" />
+                <stop
+                  offset="0.50868"
+                  stop-color="#7F7F7F"
+                  stop-opacity="0.17"
+                />
                 <stop offset="1" stop-color="#747474" stop-opacity="0.33" />
               </linearGradient>
               <linearGradient
@@ -598,7 +648,11 @@
                 gradientUnits="userSpaceOnUse"
               >
                 <stop stop-color="#747474" stop-opacity="0.29" />
-                <stop offset="0.50868" stop-color="#7F7F7F" stop-opacity="0.17" />
+                <stop
+                  offset="0.50868"
+                  stop-color="#7F7F7F"
+                  stop-opacity="0.17"
+                />
                 <stop offset="1" stop-color="#747474" stop-opacity="0.33" />
               </linearGradient>
               <linearGradient
@@ -610,7 +664,11 @@
                 gradientUnits="userSpaceOnUse"
               >
                 <stop stop-color="#747474" stop-opacity="0.29" />
-                <stop offset="0.50868" stop-color="#7F7F7F" stop-opacity="0.17" />
+                <stop
+                  offset="0.50868"
+                  stop-color="#7F7F7F"
+                  stop-opacity="0.17"
+                />
                 <stop offset="1" stop-color="#747474" stop-opacity="0.33" />
               </linearGradient>
               <radialGradient
@@ -627,9 +685,13 @@
             </defs>
           </svg>
           <ul>
-            <li on:click={() => setTrash('paper')}>
+            <li on:click={() => setTrash("paper")}>
               <p>Papel</p>
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 512 512">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="icon"
+                viewBox="0 0 512 512"
+              >
                 <path
                   d="M368 415.86V72a24.07 24.07 0 00-24-24H72a24.07 24.07 0 00-24 24v352a40.12 40.12 0 0040 40h328"
                   fill="none"
@@ -658,9 +720,12 @@
                 />
               </svg>
             </li>
-            <li on:click={() => setTrash('plastic')}>
+            <li on:click={() => setTrash("plastic")}>
               <p>Plástico</p>
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 512 512"
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="icon"
+                viewBox="0 0 512 512"
                 ><path
                   d="M448 341.37V170.61A32 32 0 00432.11 143l-152-88.46a47.94 47.94 0 00-48.24 0L79.89 143A32 32 0 0064 170.61v170.76A32 32 0 0079.89 369l152 88.46a48 48 0 0048.24 0l152-88.46A32 32 0 00448 341.37z"
                   fill="none"
@@ -678,9 +743,12 @@
                 /></svg
               >
             </li>
-            <li on:click={() => setTrash('metal')}>
+            <li on:click={() => setTrash("metal")}>
               <p>Metal</p>
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 512 512"
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="icon"
+                viewBox="0 0 512 512"
                 ><path
                   d="M262.29 192.31a64 64 0 1057.4 57.4 64.13 64.13 0 00-57.4-57.4zM416.39 256a154.34 154.34 0 01-1.53 20.79l45.21 35.46a10.81 10.81 0 012.45 13.75l-42.77 74a10.81 10.81 0 01-13.14 4.59l-44.9-18.08a16.11 16.11 0 00-15.17 1.75A164.48 164.48 0 01325 400.8a15.94 15.94 0 00-8.82 12.14l-6.73 47.89a11.08 11.08 0 01-10.68 9.17h-85.54a11.11 11.11 0 01-10.69-8.87l-6.72-47.82a16.07 16.07 0 00-9-12.22 155.3 155.3 0 01-21.46-12.57 16 16 0 00-15.11-1.71l-44.89 18.07a10.81 10.81 0 01-13.14-4.58l-42.77-74a10.8 10.8 0 012.45-13.75l38.21-30a16.05 16.05 0 006-14.08c-.36-4.17-.58-8.33-.58-12.5s.21-8.27.58-12.35a16 16 0 00-6.07-13.94l-38.19-30A10.81 10.81 0 0149.48 186l42.77-74a10.81 10.81 0 0113.14-4.59l44.9 18.08a16.11 16.11 0 0015.17-1.75A164.48 164.48 0 01187 111.2a15.94 15.94 0 008.82-12.14l6.73-47.89A11.08 11.08 0 01213.23 42h85.54a11.11 11.11 0 0110.69 8.87l6.72 47.82a16.07 16.07 0 009 12.22 155.3 155.3 0 0121.46 12.57 16 16 0 0015.11 1.71l44.89-18.07a10.81 10.81 0 0113.14 4.58l42.77 74a10.8 10.8 0 01-2.45 13.75l-38.21 30a16.05 16.05 0 00-6.05 14.08c.33 4.14.55 8.3.55 12.47z"
                   fill="none"
@@ -691,9 +759,12 @@
                 /></svg
               >
             </li>
-            <li on:click={() => setTrash('glass')}>
+            <li on:click={() => setTrash("glass")}>
               <p>Vidro</p>
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 512 512"
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="icon"
+                viewBox="0 0 512 512"
                 ><path
                   fill="none"
                   stroke="rgb(255, 255, 255)"
@@ -704,9 +775,12 @@
                 /></svg
               >
             </li>
-            <li on:click={() => setTrash('organic')}>
+            <li on:click={() => setTrash("organic")}>
               <p>Orgânico</p>
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 512 512"
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="icon"
+                viewBox="0 0 512 512"
                 ><path
                   d="M404.76 123.08C358.37 104.18 309.69 96 256 96s-106.1 9-148.9 26.68c-8.08 3.3-15.26 9-10.07 19.5C101.24 150.71 203 375 241.66 455a15.94 15.94 0 0028.72 0l144.05-312.22c3.19-6.9.9-15.4-9.67-19.7z"
                   fill="none"
@@ -722,12 +796,20 @@
                 />
                 <circle fill="rgb(255, 255, 255)" cx="192" cy="192" r="32" />
                 <circle fill="rgb(255, 255, 255)" cx="320" cy="208" r="32" />
-                <circle fill="rgb(255, 255, 255)" cx="256" cy="320" r="32" /></svg
+                <circle
+                  fill="rgb(255, 255, 255)"
+                  cx="256"
+                  cy="320"
+                  r="32"
+                /></svg
               >
             </li>
-            <li on:click={() => setTrash('eletronic')}>
+            <li on:click={() => setTrash("eletronic")}>
               <p>Eletrônico</p>
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 512 512"
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="icon"
+                viewBox="0 0 512 512"
                 ><rect
                   x="80"
                   y="80"
@@ -761,7 +843,9 @@
               >
             </li>
           </ul>
-          <button class="btn-new-game" on:click={() => active()}> Novo Jogo </button>
+          <button class="btn-new-game" on:click={() => active()}>
+            Novo Jogo
+          </button>
         </div>
       </div>
     </main>
