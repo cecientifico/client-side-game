@@ -1,14 +1,13 @@
 <script lang="ts">
   type User = {
-    email: string
-    id: number
-    name: string
-    userProviderID: string
-  }
-  import { onMount } from 'svelte'
-  import { goto } from '$app/navigation'
-  import { connectionAPI } from '../../stores'
-  import axios from 'axios'
+    email: string;
+    id: number;
+    name: string;
+    userProviderID: string;
+  };
+  import { goto } from "$app/navigation";
+  import { connectionAPI } from "../../stores";
+  import axios from "axios";
   import {
     getAuth,
     GoogleAuthProvider,
@@ -16,16 +15,16 @@
     FacebookAuthProvider,
     signInAnonymously,
     onAuthStateChanged,
-  } from 'firebase/auth'
+  } from "firebase/auth";
 
-  const auth = getAuth()
-  const googleProvider = new GoogleAuthProvider()
-  const facebookProvider = new FacebookAuthProvider()
+  const auth = getAuth();
+  const googleProvider = new GoogleAuthProvider();
+  const facebookProvider = new FacebookAuthProvider();
 
   const sendUserForAPI = async (
     userName: string | null | undefined,
     userEmail: string | null | undefined,
-    userID: string | null | undefined,
+    userID: string | null | undefined
   ): Promise<User | any> => {
     return await axios
       .post(`${connectionAPI}/handle-user`, {
@@ -34,60 +33,69 @@
         userID,
       })
       .then((response: any) => {
-        return response.data.user
+        return response.data.user;
       })
       .catch((error: any) => {
-        return error
-      })
-  }
+        return null;
+      });
+  };
 
   const googleLogin = () => {
     signInWithPopup(auth, googleProvider)
       .then((result) => {
-        const credential = GoogleAuthProvider.credentialFromResult(result)
-        const user = result.user
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const user = result.user;
       })
       .catch((error) => {
-        const errorCode = error.code
-        const errorMessage = error.message
-        const email = error.customData.email
-        const credential = GoogleAuthProvider.credentialFromError(error)
-      })
-  }
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        const email = error.customData.email;
+        const credential = GoogleAuthProvider.credentialFromError(error);
+      });
+  };
   onAuthStateChanged(auth, async (user) => {
-    const userFromAPI = await sendUserForAPI(user?.displayName, user?.email, user?.uid)
-    if (userFromAPI) {
-      goto('/')
+    if (user?.email === null) {
+      goto("/");
+    } else {
+      const userFromAPI = await sendUserForAPI(
+        user?.displayName,
+        user?.email,
+        user?.uid
+      );
+
+      if (userFromAPI) {
+        goto("/");
+      }
     }
-  })
+  });
   const facebookLogin = () => {
     signInWithPopup(auth, facebookProvider)
       .then((result) => {
-        const credential = GoogleAuthProvider.credentialFromResult(result)
-        const user = result.user
-        console.log(user)
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const user = result.user;
+        console.log(user);
       })
       .catch((error) => {
-        const errorCode = error.code
-        const errorMessage = error.message
-        const email = error.customData.email
-        const credential = GoogleAuthProvider.credentialFromError(error)
-        console.log(errorMessage)
-      })
-  }
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        const email = error.customData.email;
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        console.log(errorMessage);
+      });
+  };
   const anonymousLogin = () => {
     signInAnonymously(auth)
       .then((result) => {
-        const user = result.user
-        console.log(user)
+        const user = result.user;
+        console.log(user);
       })
       .catch((error) => {
-        const errorCode = error.code
-        const errorMessage = error.message
-        const email = error.customData.email
-        console.log(errorMessage)
-      })
-  }
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        const email = error.customData.email;
+        console.log(errorMessage);
+      });
+  };
 </script>
 
 <main class="page">
@@ -562,7 +570,10 @@
           d="M364.84 177.399C364.84 177.428 364.502 177.236 364.169 176.738C363.978 176.446 363.839 176.122 363.757 175.781C363.706 175.578 363.676 175.37 363.667 175.16C363.648 175.026 363.662 174.889 363.708 174.762C363.754 174.635 363.832 174.523 363.932 174.435C364.001 174.389 364.081 174.364 364.164 174.364C364.246 174.364 364.326 174.389 364.395 174.435C364.494 174.503 364.582 174.587 364.654 174.684C364.787 174.849 364.896 175.032 364.976 175.23C365.109 175.564 365.161 175.926 365.128 176.285C365.066 176.865 364.801 177.19 364.778 177.167C364.836 176.887 364.879 176.604 364.908 176.32C364.908 176.001 364.841 175.687 364.711 175.398C364.635 175.229 364.536 175.073 364.417 174.934C364.293 174.777 364.147 174.679 364.096 174.737C364.046 174.796 364.01 174.865 363.989 174.94C363.969 175.016 363.965 175.095 363.977 175.172C363.976 175.367 363.997 175.561 364.039 175.752C364.103 176.07 364.211 176.376 364.361 176.662C364.62 177.115 364.874 177.358 364.84 177.399Z"
           fill="#263238"
         />
-        <path d="M330.555 143.614L350.825 176.372L361.908 168.624L343.239 129.155" fill="#263238" />
+        <path
+          d="M330.555 143.614L350.825 176.372L361.908 168.624L343.239 129.155"
+          fill="#263238"
+        />
         <path
           d="M332.196 136.428C332.281 136.463 331.672 137.797 331.384 139.554C331.096 141.311 331.215 142.773 331.124 142.785C330.711 140.595 331.092 138.325 332.196 136.405V136.428Z"
           fill="#455A64"
@@ -1095,8 +1106,8 @@
       <div class="header">
         <h3>Login</h3>
         <p class="mt-1">
-          Participe dos ranks mundiais entrando com uma de suas contas ou acesse rapido pulando o
-          login
+          Participe dos ranks mundiais entrando com uma de suas contas ou acesse
+          rapido pulando o login
         </p>
       </div>
       <div class="content">
@@ -1228,7 +1239,11 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: linear-gradient(146.43deg, rgb(84, 142, 238) 0.35%, rgb(91, 153, 255) 00%);
+        background: linear-gradient(
+          146.43deg,
+          rgb(84, 142, 238) 0.35%,
+          rgb(91, 153, 255) 00%
+        );
         border-radius: 0 var(--brd-radius) var(--brd-radius) 0;
         display: flex;
         align-items: center;

@@ -1,10 +1,12 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
-  import { goto } from '$app/navigation'
-  import { currentTrash, trashItems } from '../../stores'
-  let isGameOK = true
-  let time = 2000
-  let currentItemTrash = ''
+  import { onMount } from "svelte";
+  import { goto } from "$app/navigation";
+  import { currentTrash, trashItems } from "../../stores";
+  let isGameOK = true;
+  let time = 2000;
+  let transition = 5000;
+  let currentItemTrash = "";
+  let card: any = "";
   const initGame = () => {
     const allTrashsItems = [
       ...trashItems.trashs.eletronic,
@@ -13,35 +15,62 @@
       ...trashItems.trashs.organic,
       ...trashItems.trashs.paper,
       ...trashItems.trashs.plastic,
-    ]
+    ];
     const sorteTrashItem = () => {
-      const index = Math.round(Math.random() * 30)
-      currentItemTrash = allTrashsItems[index]
-      console.log(currentItemTrash)
-    }
-    sorteTrashItem()
+      const index = Math.round(Math.random() * 30);
+      const positionX = Math.round(Math.random() * 100);
+      currentItemTrash = allTrashsItems[index];
+      const item = document.createElement("div");
+      item.classList.add("item-desc", "cellphone");
+      item.style.left = `${positionX}%`;
+      item.animate([{ top: "0" }, { top: "100%" }], {
+        duration: transition,
+        fill: "forwards",
+      });
+      card.appendChild(item);
+      item.addEventListener("mousedown", (event) => {
+        card.addEventListener("mouseup", () => {
+          event.target?.remove();
+          if (time > 200) {
+            time = time - 10;
+          }
+          if (transition > 700) {
+            transition = transition - 10;
+          }
+        });
+      });
+    };
+    sorteTrashItem();
     setTimeout(() => {
-      initGame()
-    }, time)
-  }
+      initGame();
+    }, time);
+  };
   onMount(() => {
+    card = document.querySelector(".game-card")!;
+    const page = document.querySelector(".page")!;
+    card.addEventListener("mousedown", () => {
+      card.classList.add("clicked");
+    });
+    card.addEventListener("mouseup", () => {
+      card.classList.remove("clicked");
+    });
     currentTrash.subscribe((item) => {
-      if (!item || item === null || item === undefined || item === '') {
-        isGameOK = false
-        goto('/')
-        return
+      if (!item || item === null || item === undefined || item === "") {
+        isGameOK = false;
+        goto("/");
+        return;
       }
-      isGameOK = true
-    })
+      isGameOK = true;
+    });
     if (isGameOK) {
-      initGame()
+      initGame();
     }
-  })
+  });
 </script>
 
 {#if isGameOK}
   <main class="page">
-    <div class="card">
+    <div class="card game-card">
       <svg
         class="cloud"
         width="916"
@@ -261,7 +290,9 @@
       will-change: left;
       animation: cloud linear 10000ms forwards infinite;
     }
+
     .card {
+      cursor: url(../../lib/assets/cursors/pre-get.png), default;
       position: relative;
       overflow: hidden;
       width: 100%;
@@ -275,6 +306,7 @@
       flex-direction: column;
       margin: auto;
       box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.1);
+
       @media (max-width: 800px) {
         border-radius: 0;
         height: 100%;

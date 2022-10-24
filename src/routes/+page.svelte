@@ -65,7 +65,7 @@
       </div>
       <div class="score">
         {#if !scoreLoaded}
-          <div class="loading">
+          <div class="loading-animation">
             <div class="ball ball-ne" />
             <div class="ball ball-nw" />
             <div class="ball ball-sw" />
@@ -878,6 +878,7 @@
       flex-direction: column;
       margin: auto;
       box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.1);
+      cursor: url(../lib/assets/cursors/cursor.png), default;
       @media (max-width: 800px) {
         border-radius: 0;
         height: 100%;
@@ -903,6 +904,7 @@
           justify-content: center;
           align-items: center;
           cursor: pointer;
+          cursor: url(../lib/assets/cursors/pointer.png), default;
           & img {
             width: 100%;
             height: 100%;
@@ -978,6 +980,7 @@
                 font-size: 0.5em;
               }
               cursor: pointer;
+              cursor: url(../lib/assets/cursors/pointer.png), default;
               &:nth-child(2) {
                 transform: translateX(50px);
               }
@@ -1082,6 +1085,7 @@
                 overflow: hidden;
                 backdrop-filter: blur(10px);
                 cursor: pointer;
+                cursor: url(../lib/assets/cursors/pointer.png), default;
                 svg {
                   position: absolute;
                   left: 50%;
@@ -1110,6 +1114,7 @@
               justify-content: center;
               backdrop-filter: blur(10px);
               cursor: pointer;
+              cursor: url(../lib/assets/cursors/pointer.png), default;
             }
           }
         }
