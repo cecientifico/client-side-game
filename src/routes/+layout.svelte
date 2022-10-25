@@ -8,7 +8,6 @@
   import { getAuth, onAuthStateChanged } from "firebase/auth";
   import Loading from "../lib/Loading.svelte";
   let isLoading = true;
-  let msgLoading = "Estamos a trabalhar...";
   const app = initializeApp(firebaseConfig);
   const auth = getAuth();
   onMount(async () => {
@@ -24,7 +23,7 @@
 </script>
 
 <main>
-  <Loading {isLoading} {msgLoading} />
+  <Loading {isLoading} />
 </main>
 {#if !isLoading}
   <slot />

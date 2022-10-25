@@ -38,12 +38,9 @@ body {
   z-index: 10000;
   &.cellphone {
     background-image: url("../lib/assets/items/eletronico.png");
-    // background-clip: content-box;
     background-position: center center;
     background-repeat: no-repeat;
     background-size: contain;
-    // background: #ffffff url("../lib/assets/items/eletronico.png") no-repeat
-    //   right top fixed;
   }
 }
 

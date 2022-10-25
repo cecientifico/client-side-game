@@ -20,7 +20,6 @@
   const auth = getAuth();
   const googleProvider = new GoogleAuthProvider();
   const facebookProvider = new FacebookAuthProvider();
-
   const sendUserForAPI = async (
     userName: string | null | undefined,
     userEmail: string | null | undefined,
@@ -62,7 +61,6 @@
         user?.email,
         user?.uid
       );
-
       if (userFromAPI) {
         goto("/");
       }
@@ -101,6 +99,7 @@
 <main class="page">
   <div class="card">
     <div class="card__image">
+      <h4>Reciclage Game</h4>
       <svg
         width="423"
         height="290"
@@ -1209,6 +1208,7 @@
       justify-content: center;
       margin: auto;
       box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.1);
+      cursor: url(../../lib/assets/cursors/cursor.png), default;
       @media (max-width: 800px) {
         border-radius: 0;
         height: 100%;
@@ -1216,6 +1216,7 @@
       @media (max-width: 700px) {
         flex-direction: column;
         width: 100%;
+        padding: 0;
       }
       &__image {
         width: 50%;
@@ -1223,10 +1224,19 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        position: relative;
         border-radius: var(--brd-radius) 0 0 var(--brd-radius);
         background-color: rgb(var(--bg-card-color));
+        & h4 {
+          position: absolute;
+          top: 1em;
+          left: 1em;
+          font-size: var(--fs-h4);
+          color: rgb(var(--text-primary));
+        }
         @media (max-width: 700px) {
           width: 100%;
+          height: 40%;
           border-radius: 0;
         }
         @media (max-width: 800px) {
@@ -1239,11 +1249,8 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: linear-gradient(
-          146.43deg,
-          rgb(84, 142, 238) 0.35%,
-          rgb(91, 153, 255) 00%
-        );
+
+        background: linear-gradient(146.43deg, #548eee 0.35%, #5b99ff 100%);
         border-radius: 0 var(--brd-radius) var(--brd-radius) 0;
         display: flex;
         align-items: center;
@@ -1251,10 +1258,17 @@
         flex-direction: column;
         @media (max-width: 700px) {
           width: 100%;
-          border-radius: 0;
+          height: 60%;
+          border-top-left-radius: var(--brd-radius);
+          border-top-right-radius: var(--brd-radius);
+          border-bottom-left-radius: 0;
+          border-bottom-right-radius: 0;
         }
         @media (max-width: 800px) {
-          border-radius: 0;
+          border-top-left-radius: var(--brd-radius);
+          border-top-right-radius: var(--brd-radius);
+          border-bottom-left-radius: 0;
+          border-bottom-right-radius: 0;
           justify-content: center;
         }
         & .header {
@@ -1289,14 +1303,15 @@
             width: 100%;
             height: 50px;
             border-radius: 2em;
-            cursor: pointer;
-            font-size: var(--fs-p);
             background-color: rgb(var(--bg-card-color));
+            font-size: var(--fs-p);
             display: flex;
             align-items: center;
             justify-content: flex-start;
             padding: 0.7em;
             column-gap: 1em;
+            cursor: pointer;
+            cursor: url(../../lib/assets/cursors/pointer.png), default;
           }
         }
         & .footer {
@@ -1311,7 +1326,6 @@
             width: 50%;
             height: 50px;
             border-radius: 2em;
-            cursor: pointer;
             font-size: var(--fs-p);
             background-color: rgb(var(--bg-card-color));
             display: flex;
@@ -1319,6 +1333,8 @@
             justify-content: space-evenly;
             padding: 0.7em;
             column-gap: 1em;
+            cursor: pointer;
+            cursor: url(../../lib/assets/cursors/pointer.png), default;
           }
         }
       }

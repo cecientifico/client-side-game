@@ -32,6 +32,8 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"firebase": "^9.9.4"
+		"@vitejs/plugin-basic-ssl": "^0.1.2",
+		"firebase": "^9.9.4",
+		"pensador-api": "^1.0.0"
 	}
 }

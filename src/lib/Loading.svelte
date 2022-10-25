@@ -1,20 +1,24 @@
 <script lang="ts">
-  import { fade } from 'svelte/transition'
-  export let isLoading: boolean = false
-  export let msgLoading: string = 'Loading...'
+  import { fade } from "svelte/transition";
+  import pensador from "./msgsLoading";
+  const index = Math.round(Math.random() * 21);
+  export let isLoading: boolean = false;
+  let msgLoading: string = pensador[index].texto;
+  let author: string = pensador[index].autor;
 </script>
 
 {#if isLoading}
   <main class="loading" transition:fade={{ duration: 200 }}>
-    <div class="loading__box">
-      <div />
-      <div />
-      <div />
-      <div />
-      <div />
-      <div />
+    <div class="loading-animation">
+      <div class="ball ball-ne" />
+      <div class="ball ball-nw" />
+      <div class="ball ball-sw" />
+      <div class="ball ball-se" />
     </div>
-    <h2 class="loading__msg">{msgLoading}</h2>
+    <div class="container">
+      <p class="loading__msg">"{msgLoading}"</p>
+      <p class="author">--{author}</p>
+    </div>
   </main>
 {/if}
 
@@ -39,63 +43,30 @@
     flex-direction: column;
     color: rgb(var(--text-color));
     row-gap: 1em;
-    div {
-      position: relative;
+    padding: 0.5em;
+    & .loading-animation {
+      --loading-ball-size: 10px;
+      --loading-spacing-size: 15px;
+      --loading-ball-spacing-size: calc(
+        (var(--loading-ball-size) + var(--loading-spacing-size))
+      );
+      --loading-total-size: calc(
+        (var(--loading-ball-size) * 2 + var(--loading-spacing-size))
+      );
     }
-    &__box {
-      position: relative;
-      width: 96px;
-      height: 96px;
-      & div {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        width: 16px;
-        height: 16px;
-        margin: auto;
-        border-radius: 50%;
-        background-color: rgb(var(--primary-color));
-        transform: rotate(0deg) translateY(-35px);
-        animation: loading 2000ms infinite;
-        &:nth-child(2) {
-          width: 13px;
-          height: 13px;
-          animation: loading 2000ms 100ms infinite;
-        }
-        &:nth-child(3) {
-          width: 11px;
-          height: 11px;
-          animation: loading 2000ms 200ms infinite;
-        }
-        &:nth-child(4) {
-          width: 9px;
-          height: 9px;
-          animation: loading 2000ms 300ms infinite;
-        }
-        &:nth-child(5) {
-          width: 7px;
-          height: 7px;
-          animation: loading 2000ms 400ms infinite;
-        }
-        &:nth-child(6) {
-          width: 5px;
-          height: 5px;
-          animation: loading 2000ms 500ms infinite;
-        }
-      }
+    .container {
+      display: flex;
+      align-items: center;
+      width: 60%;
+      justify-content: center;
+      flex-direction: column;
     }
     .loading__msg {
-      font-size: 1.3em;
+      font-size: 1em;
     }
-  }
-  @keyframes loading {
-    0% {
-      transform: rotate(0deg) translateY(-35px);
-    }
-    100% {
-      transform: rotate(360deg) translateY(-35px);
+    .author {
+      align-self: flex-end;
+      font-size: 0.7em;
     }
   }
 </style>

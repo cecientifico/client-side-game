@@ -41,7 +41,7 @@
   };
   const setTrash = (trash: string) => {
     currentTrash.set(trash);
-    goto("/game");
+    goto("/pre-game");
   };
   const toggleProfile = (event: any) => {
     event.stopPropagation();
@@ -907,6 +907,7 @@
           cursor: url(../lib/assets/cursors/pointer.png), default;
           & img {
             width: 100%;
+
             height: 100%;
             border-radius: 50%;
             pointer-events: none;
@@ -934,6 +935,7 @@
         align-items: flex-end;
         justify-content: space-between;
         padding: 0.5em;
+        position: relative;
         & .left {
           position: relative;
           display: flex;
@@ -941,6 +943,16 @@
           justify-content: center;
           flex-direction: column;
           row-gap: 1em;
+          @media (max-width: 800px) {
+            position: absolute;
+            top: 20%;
+            left: 0.5em;
+          }
+          @media (max-width: 700px) {
+            position: absolute;
+            top: 20%;
+            left: 0.5em;
+          }
           & svg {
             width: 170px;
             height: 170px;
@@ -951,10 +963,10 @@
           }
           ul {
             position: absolute;
-            top: 0;
+            bottom: 0;
             left: 0;
             width: 100%;
-            height: 100%;
+            height: 170px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -997,6 +1009,16 @@
           justify-content: center;
           flex-direction: column;
           row-gap: 1em;
+          @media (max-width: 800px) {
+            position: absolute;
+            bottom: 0.5em;
+            right: 0.5em;
+          }
+          @media (max-width: 700px) {
+            position: absolute;
+            bottom: 0.5em;
+            right: 0.5em;
+          }
           & .menu {
             position: relative;
             overflow-y: hidden;

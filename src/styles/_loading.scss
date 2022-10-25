@@ -1,22 +1,26 @@
-$accent: hsl(186, 68%, 29%);
-$loading-ball-size: 10px;
-$loading-spacing-size: 15px;
-$loading-ball-spacing-size: calc(($loading-ball-size + $loading-spacing-size));
-$loading-total-size: calc(($loading-ball-size * 2 + $loading-spacing-size));
 .loading-animation {
-  width: $loading-total-size;
-  height: $loading-total-size;
-  margin: calc(($loading-ball-spacing-size / 2));
+  --accent: hsl(186, 68%, 29%);
+  --loading-ball-size: 10px;
+  --loading-spacing-size: 15px;
+  --loading-ball-spacing-size: calc(
+    (var(--loading-ball-size) + var(--loading-spacing-size))
+  );
+  --loading-total-size: calc(
+    (var(--loading-ball-size) * 2 + var(--loading-spacing-size))
+  );
+  width: var(--loading-total-size);
+  height: var(--loading-total-size);
+  margin: calc((var(--loading-ball-spacing-size) / 2));
   position: relative;
   display: inline-block;
   -webkit-animation: spin 2s infinite linear;
   animation: spin 2s infinite linear;
   & .ball {
     position: absolute;
-    width: $loading-ball-size;
-    height: $loading-ball-size;
+    width: var(--loading-ball-size);
+    height: var(--loading-ball-size);
     border-radius: 100%;
-    background-color: $accent;
+    background-color: var(--accent);
     &.ball-ne {
       background-color: rgb(var(--primary-color));
       animation: ne 2s infinite linear;
@@ -49,8 +53,8 @@ $loading-total-size: calc(($loading-ball-size * 2 + $loading-spacing-size));
 @keyframes ne {
   50% {
     transform: translate3d(
-      calc(($loading-ball-spacing-size / 3)),
-      calc(($loading-ball-spacing-size / 3)),
+      calc((var(--loading-ball-spacing-size) / 3)),
+      calc((var(--loading-ball-spacing-size) / 3)),
       0
     );
   }
@@ -58,8 +62,8 @@ $loading-total-size: calc(($loading-ball-size * 2 + $loading-spacing-size));
 @keyframes nw {
   50% {
     transform: translate3d(
-      calc(($loading-ball-spacing-size / -3)),
-      calc(($loading-ball-spacing-size / 3)),
+      calc((var(--loading-ball-spacing-size) / -3)),
+      calc((var(--loading-ball-spacing-size) / 3)),
       0
     );
   }
@@ -68,8 +72,8 @@ $loading-total-size: calc(($loading-ball-size * 2 + $loading-spacing-size));
 @keyframes sw {
   50% {
     transform: translate3d(
-      calc(($loading-ball-spacing-size / -3)),
-      calc(($loading-ball-spacing-size / -3)),
+      calc((var(--loading-ball-spacing-size) / -3)),
+      calc((var(--loading-ball-spacing-size) / -3)),
       0
     );
   }
@@ -78,8 +82,8 @@ $loading-total-size: calc(($loading-ball-size * 2 + $loading-spacing-size));
 @keyframes se {
   50% {
     transform: translate3d(
-      calc(($loading-ball-spacing-size / 3)),
-      calc(($loading-ball-spacing-size / -3)),
+      calc((var(--loading-ball-spacing-size) / 3)),
+      calc((var(--loading-ball-spacing-size) / -3)),
       0
     );
   }
