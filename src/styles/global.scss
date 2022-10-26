@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
 @import "./variables";
 @import "./loading";
+@import "./diurnalCycle";
 * {
   margin: 0;
   padding: 0;
@@ -36,11 +37,98 @@ body {
   top: 0;
   left: 0;
   z-index: 10000;
-  &.cellphone {
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  &.eletronico {
     background-image: url("../lib/assets/items/eletronico.png");
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: contain;
+  }
+  &.eletronico-1 {
+    background-image: url("../lib/assets/items/eletronico-1.png");
+  }
+  &.eletronico-2 {
+    background-image: url("../lib/assets/items/eletronico-2.png");
+  }
+  &.eletronico-3 {
+    background-image: url("../lib/assets/items/eletronico-3.png");
+  }
+  &.eletronico-4 {
+    background-image: url("../lib/assets/items/eletronico-4.png");
+  }
+  &.vidro {
+    background-image: url("../lib/assets/items/vidro.png");
+  }
+  &.vidro-1 {
+    background-image: url("../lib/assets/items/vidro-1.png");
+  }
+  &.vidro-2 {
+    background-image: url("../lib/assets/items/vidro-2.png");
+  }
+  &.vidro-3 {
+    background-image: url("../lib/assets/items/vidro-3.png");
+  }
+  &.vidro-4 {
+    background-image: url("../lib/assets/items/vidro-4.png");
+  }
+  &.metal {
+    background-image: url("../lib/assets/items/metal.png");
+  }
+  &.metal-1 {
+    background-image: url("../lib/assets/items/metal-1.png");
+  }
+  &.metal-2 {
+    background-image: url("../lib/assets/items/metal-2.png");
+  }
+  &.metal-3 {
+    background-image: url("../lib/assets/items/metal-3.png");
+  }
+  &.metal-4 {
+    background-image: url("../lib/assets/items/metal-4.png");
+  }
+  &.organico {
+    background-image: url("../lib/assets/items/organico.png");
+  }
+  &.organico-1 {
+    background-image: url("../lib/assets/items/organico-1.png");
+  }
+  &.organico-2 {
+    background-image: url("../lib/assets/items/organico-2.png");
+  }
+  &.organico-3 {
+    background-image: url("../lib/assets/items/organico-3.png");
+  }
+  &.organico-4 {
+    background-image: url("../lib/assets/items/organico-4.png");
+  }
+  &.papel {
+    background-image: url("../lib/assets/items/papel.png");
+  }
+  &.papel-1 {
+    background-image: url("../lib/assets/items/papel-1.png");
+  }
+  &.papel-2 {
+    background-image: url("../lib/assets/items/papel-2.png");
+  }
+  &.papel-3 {
+    background-image: url("../lib/assets/items/papel-3.png");
+  }
+  &.papel-4 {
+    background-image: url("../lib/assets/items/papel-4.png");
+  }
+  &.plastico {
+    background-image: url("../lib/assets/items/plastico.png");
+  }
+  &.plastico-1 {
+    background-image: url("../lib/assets/items/plastico-1.png");
+  }
+  &.plastico-2 {
+    background-image: url("../lib/assets/items/plastico-2.png");
+  }
+  &.plastico-3 {
+    background-image: url("../lib/assets/items/plastico-3.png");
+  }
+  &.plastico-4 {
+    background-image: url("../lib/assets/items/plastico-4.png");
   }
 }
 

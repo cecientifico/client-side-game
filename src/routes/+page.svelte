@@ -41,7 +41,7 @@
   };
   const setTrash = (trash: string) => {
     currentTrash.set(trash);
-    goto("/pre-game");
+    goto("/game");
   };
   const toggleProfile = (event: any) => {
     event.stopPropagation();
@@ -50,7 +50,8 @@
 </script>
 
 <main class="page">
-  <div class="card">
+  <div class="card diurnal">
+    <div class="sun-and-moon" />
     <header>
       <div class="profile" on:click={(event) => toggleProfile(event)}>
         <Profile
@@ -471,7 +472,7 @@
         </svg>
         <ul>
           <li>
-            <p>Zezin</p>
+            <p data-content="Lorem ipsum dolor sit amet">Zezin</p>
             <span>52000</span>
           </li>
           <li>

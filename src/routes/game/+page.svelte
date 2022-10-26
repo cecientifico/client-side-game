@@ -21,7 +21,7 @@
       const positionX = Math.round(Math.random() * 100);
       currentItemTrash = allTrashsItems[index];
       const item = document.createElement("div");
-      item.classList.add("item-desc", "cellphone");
+      item.classList.add("item-desc", currentItemTrash);
       item.style.left = `${positionX}%`;
       item.animate([{ top: "0" }, { top: "100%" }], {
         duration: transition,
@@ -70,7 +70,8 @@
 
 {#if isGameOK}
   <main class="page">
-    <div class="card game-card">
+    <div class="card game-card diurnal">
+      <div class="sun-and-moon" />
       <svg
         class="cloud"
         width="916"
