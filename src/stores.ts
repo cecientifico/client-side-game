@@ -21,7 +21,7 @@ export const trashItems = {
       "eletronico-4",
     ],
     glass: ["vidro", "vidro-1", "vidro-2", "vidro-3", "vidro-4"],
-    metal: ["matal", "matal-1", "matal-2", "matal-3", "matal-4"],
+    metal: ["metal", "metal-1", "metal-2", "metal-3", "metal-4"],
     organic: [
       "organico",
       "organico-1",

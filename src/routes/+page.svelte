@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
   import Profile from "$lib/Profile.svelte";
-  import { getAuth, onAuthStateChanged } from "firebase/auth";
+  import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
   import axios from "axios";
   import { currentTrash, connectionAPI } from "../stores";
 
@@ -47,6 +47,15 @@
     event.stopPropagation();
     isProfile = !isProfile;
   };
+  const signOutUser = () => {
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+      })
+      .catch((error) => {
+        // An error happened.
+      });
+  };
 </script>
 
 <main class="page">
@@ -54,15 +63,31 @@
     <div class="sun-and-moon" />
     <header>
       <div class="profile" on:click={(event) => toggleProfile(event)}>
-        <Profile
-          {isProfile}
-          displayName={displayNameUser}
-          urlImageUser={urlProfileImageUser}
-          emailUser={emailProfileUser}
-          {auth}
-        />
         <!-- svelte-ignore a11y-missing-attribute -->
-        <img src={urlProfileImageUser} />
+        {#if scoreLoaded}
+          <img src={urlProfileImageUser} />
+        {/if}
+        <ul>
+          <li>
+            {displayNameUser}
+          </li>
+          <li on:click={() => signOutUser()}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="icon"
+              viewBox="0 0 512 512"
+            >
+              <path
+                d="M304 336v40a40 40 0 01-40 40H104a40 40 0 01-40-40V136a40 40 0 0140-40h152c22.09 0 48 17.91 48 40v40M368 336l80-80-80-80M176 256h256"
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="32"
+              />
+            </svg>
+          </li>
+        </ul>
       </div>
       <div class="score">
         {#if !scoreLoaded}
@@ -844,9 +869,7 @@
               >
             </li>
           </ul>
-          <button class="btn-new-game" on:click={() => active()}>
-            Novo Jogo
-          </button>
+          <button class="btn-new-game"> Novo Jogo </button>
         </div>
       </div>
     </main>
@@ -863,7 +886,7 @@
       left: -120%;
       transition: translateX(-50%);
       will-change: left;
-      animation: cloud linear 10000ms forwards infinite;
+      animation: cloud 10000ms linear 0s forwards infinite;
     }
     .card {
       position: relative;
@@ -898,20 +921,44 @@
         z-index: 100000;
         & .profile {
           position: relative;
-          width: 50px;
+          width: 300px;
           height: 50px;
-          border-radius: 50%;
           display: flex;
           justify-content: center;
           align-items: center;
           cursor: pointer;
           cursor: url(../lib/assets/cursors/pointer.png), default;
           & img {
-            width: 100%;
-
-            height: 100%;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             pointer-events: none;
+          }
+          ul {
+            display: flex;
+            flex-direction: column;
+            li {
+              margin-left: 0.5em;
+              font-size: var(--fs-p);
+              list-style: none;
+              text-align: center;
+              width: 250px;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              @media (max-width: 800px) {
+                width: 200px;
+              }
+              @media (max-width: 700px) {
+                width: 100px;
+              }
+              &:last-child {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                width: 20px;
+              }
+            }
           }
         }
         & .score {
@@ -985,7 +1032,6 @@
               align-items: flex-start;
               justify-content: center;
               flex-direction: column;
-              backdrop-filter: blur(10px);
               & p {
                 font-size: var(--fs-p);
               }
@@ -1106,7 +1152,6 @@
                 justify-content: center;
                 font-size: var(--fs-p);
                 overflow: hidden;
-                backdrop-filter: blur(10px);
                 cursor: pointer;
                 cursor: url(../lib/assets/cursors/pointer.png), default;
                 svg {
@@ -1135,7 +1180,7 @@
               padding: 0.5em;
               align-items: center;
               justify-content: center;
-              backdrop-filter: blur(10px);
+              z-index: 10000000;
               cursor: pointer;
               cursor: url(../lib/assets/cursors/pointer.png), default;
             }
@@ -1145,6 +1190,9 @@
     }
   }
   @keyframes cloud {
+    from {
+      left: -1000px;
+    }
     to {
       left: 100%;
     }
