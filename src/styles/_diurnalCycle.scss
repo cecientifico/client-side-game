@@ -20,7 +20,7 @@
   border-radius: 50%;
   background-color: #ffe079;
   box-shadow: 0 0 20em 5em rgba(255, 255, 128, 0.5);
-  animation: sun-colour 60s linear 0s inforwards infinitefinite;
+  animation: sun-colour 60s linear 0s forwards infinite;
 }
 .sun-and-moon {
   position: absolute;
@@ -55,34 +55,44 @@
     background-color: #ffe079;
   }
 }
-@keyframes sky {
-  0% {
-    background-color: rgba(202, 103, 2, 0.3);
-  }
-  5% {
-    background-color: #ffffff;
-  }
-  30% {
-    background-color: #ffffff;
-  }
-  50% {
-    background-color: rgba(202, 103, 2, 0.3);
-  }
-  55% {
-    background-color: #2b2d42;
-  }
-  80% {
-    background-color: #2b2d42;
-  }
-  100% {
-    background-color: rgba(202, 103, 2, 0.3);
-  }
-}
+
 @keyframes sun-movement {
   0% {
     transform: rotate(0deg);
   }
   100% {
     transform: rotate(-360deg);
+  }
+}
+
+
+@keyframes sky {
+  0% {
+    background-color: rgba(202, 103, 2, 0.3);
+    color: rgb(var(--text-secondary));
+  }
+  5% {
+    background-color: #ffffff;
+    color: rgb(var(--text-secondary));
+  }
+  30% {
+    background-color: #ffffff;
+    color: rgb(var(--text-secondary));
+  }
+  50% {
+    background-color: rgba(202, 103, 2, 0.3);
+    color: rgb(var(--text-secondary));
+  }
+  55% {
+    background-color: #2b2d42;
+    color: rgb(var(--text-nightly));
+  }
+  80% {
+    background-color: #2b2d42;
+    color: rgb(var(--text-nightly));
+  }
+  100% {
+    background-color: rgba(202, 103, 2, 0.3);
+    color: rgb(var(--text-secondary));
   }
 }
