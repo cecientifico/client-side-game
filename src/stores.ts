@@ -10,6 +10,11 @@ export const firebaseConfig = {
   measurementId: "G-J4GJ778B27",
 };
 
+export const currentGame = writable({
+  game: '',
+  displayName: ''
+})
+
 export const currentTrash = writable("");
 export const trashItems = {
   trashs: {

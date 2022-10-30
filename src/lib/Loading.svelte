@@ -1,10 +1,7 @@
 <script lang="ts">
-  import { fade } from "svelte/transition";
-  import pensador from "./msgsLoading";
-  const index = Math.round(Math.random() * 21);
-  export let isLoading: boolean = false;
-  let msgLoading: string = pensador[index].texto;
-  let author: string = pensador[index].autor;
+  import {fade} from "svelte/transition";
+
+  export let isLoading = false;
 </script>
 
 {#if isLoading}
@@ -43,8 +40,8 @@
           y2="27.9951"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#CECECE" />
-          <stop offset="1" stop-color="#7F7F7F" />
+          <stop stop-color="#CECECE"/>
+          <stop offset="1" stop-color="#7F7F7F"/>
         </linearGradient>
         <linearGradient
           id="paint1_linear_175_70"
@@ -54,8 +51,8 @@
           y2="48.3931"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#AFB3B0" />
-          <stop offset="1" stop-color="#747474" />
+          <stop stop-color="#AFB3B0"/>
+          <stop offset="1" stop-color="#747474"/>
         </linearGradient>
       </defs>
     </svg>
@@ -103,9 +100,9 @@
           y2="151.5"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#AFB3B0" />
-          <stop offset="0.826394" stop-color="#878787" />
-          <stop offset="1" stop-color="#747474" />
+          <stop stop-color="#AFB3B0"/>
+          <stop offset="0.826394" stop-color="#878787"/>
+          <stop offset="1" stop-color="#747474"/>
         </linearGradient>
         <linearGradient
           id="paint1_linear_178_79"
@@ -115,9 +112,9 @@
           y2="115.355"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#747474" stop-opacity="0.29" />
-          <stop offset="0.50868" stop-color="#7F7F7F" stop-opacity="0.17" />
-          <stop offset="1" stop-color="#747474" stop-opacity="0.33" />
+          <stop stop-color="#747474" stop-opacity="0.29"/>
+          <stop offset="0.50868" stop-color="#7F7F7F" stop-opacity="0.17"/>
+          <stop offset="1" stop-color="#747474" stop-opacity="0.33"/>
         </linearGradient>
         <linearGradient
           id="paint2_linear_178_79"
@@ -127,9 +124,9 @@
           y2="114.334"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#747474" stop-opacity="0.29" />
-          <stop offset="0.50868" stop-color="#7F7F7F" stop-opacity="0.17" />
-          <stop offset="1" stop-color="#747474" stop-opacity="0.33" />
+          <stop stop-color="#747474" stop-opacity="0.29"/>
+          <stop offset="0.50868" stop-color="#7F7F7F" stop-opacity="0.17"/>
+          <stop offset="1" stop-color="#747474" stop-opacity="0.33"/>
         </linearGradient>
         <linearGradient
           id="paint3_linear_178_79"
@@ -139,9 +136,9 @@
           y2="93.9774"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#747474" stop-opacity="0.29" />
-          <stop offset="0.50868" stop-color="#7F7F7F" stop-opacity="0.17" />
-          <stop offset="1" stop-color="#747474" stop-opacity="0.33" />
+          <stop stop-color="#747474" stop-opacity="0.29"/>
+          <stop offset="0.50868" stop-color="#7F7F7F" stop-opacity="0.17"/>
+          <stop offset="1" stop-color="#747474" stop-opacity="0.33"/>
         </linearGradient>
       </defs>
     </svg>
@@ -156,6 +153,7 @@
     animation: teste 1s linear forwards infinite;
     transition: 0.3s linear;
   }
+
   @keyframes teste {
     50% {
       margin-top: -400px;
@@ -174,18 +172,21 @@
       margin-top: -200px;
     }
   }
+
   .svg2 {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
   }
+
   h3 {
     position: absolute;
     top: 70%;
     left: 50%;
     transform: translate(-50%, -50%);
   }
+
   .loading {
     width: 100%;
     height: 100%;
@@ -207,16 +208,18 @@
     color: rgb(var(--text-color));
     row-gap: 1em;
     padding: 0.5em;
+
     & .loading-animation {
       --loading-ball-size: 10px;
       --loading-spacing-size: 15px;
       --loading-ball-spacing-size: calc(
-        (var(--loading-ball-size) + var(--loading-spacing-size))
+              (var(--loading-ball-size) + var(--loading-spacing-size))
       );
       --loading-total-size: calc(
-        (var(--loading-ball-size) * 2 + var(--loading-spacing-size))
+              (var(--loading-ball-size) * 2 + var(--loading-spacing-size))
       );
     }
+
     .container {
       display: flex;
       align-items: center;
@@ -224,9 +227,11 @@
       justify-content: center;
       flex-direction: column;
     }
+
     .loading__msg {
       font-size: 1em;
     }
+
     .author {
       align-self: flex-end;
       font-size: 0.7em;

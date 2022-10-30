@@ -1,12 +1,13 @@
 <script lang="ts">
   import "../styles/global.scss";
-  import { onMount } from "svelte";
-  import { goto } from "$app/navigation";
-  import { firebaseConfig } from "../stores";
-  import { initializeApp } from "firebase/app";
-  import { getAnalytics } from "firebase/analytics";
-  import { getAuth, onAuthStateChanged } from "firebase/auth";
+  import {onMount} from "svelte";
+  import {goto} from "$app/navigation";
+  import {firebaseConfig} from "../stores";
+  import {initializeApp} from "firebase/app";
+  import {getAnalytics} from "firebase/analytics";
+  import {getAuth, onAuthStateChanged} from "firebase/auth";
   import Loading from "../lib/Loading.svelte";
+
   let isLoading = true;
   const app = initializeApp(firebaseConfig);
   const auth = getAuth();
@@ -22,8 +23,8 @@
 </script>
 
 <main>
-  <Loading {isLoading} />
+  <Loading {isLoading}/>
 </main>
 {#if !isLoading}
-  <slot />
+  <slot/>
 {/if}
