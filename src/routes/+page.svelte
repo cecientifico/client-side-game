@@ -63,11 +63,11 @@
     menu.classList.remove("active");
   };
   const gotoGame = async ({game, displayName}: Game) => {
-    currentGame.update(() => ({
-      game,
-      displayName,
-    }))
-    await goto('/pre-game')
+    // currentGame.update(() => ({
+    //   game,
+    //   displayName,
+    // }))
+    await goto(`${game}/pre-game`)
   }
   const signOutUser = () => {
     signOut(auth);
@@ -531,7 +531,7 @@
                 <p>Aventura</p>
                 <div class="icon adventure"></div>
               </li>
-              <li on:click={() => gotoGame({game: 'eventual', displayName:'Casual'})}>
+              <li on:click={() => gotoGame({game: 'memory-game', displayName:'Casual'})}>
                 <p>Casual</p>
                 <div class="icon eventual"></div>
               </li>

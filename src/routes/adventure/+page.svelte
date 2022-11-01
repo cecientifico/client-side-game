@@ -1,12 +1,16 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-  import { goto } from "$app/navigation";
-  import { currentTrash, trashItems } from "../../stores";
+  import {onMount} from "svelte";
+  import {goto} from "$app/navigation";
+  import {currentGame, currentTrash, trashItems} from "../../stores";
+
   let isGameOK = true;
   let time = 2000;
   let transition = 5000;
   let currentItemTrash = "";
-  let card: any = "";
+  let currentTrashSelected = '';
+  let card = "";
+  let pontuation = 0;
+  let faults = 7;
   const initGame = () => {
     const allTrashsItems = [
       ...trashItems.trashs.eletronic,
@@ -22,27 +26,60 @@
       currentItemTrash = allTrashsItems[index];
       const item = document.createElement("div");
       item.classList.add("item-desc", currentItemTrash);
+      if (index < 5) {
+        item.setAttribute('data-trash', 'electronic')
+      } else if (index > 4 && index < 10) {
+        item.setAttribute('data-trash', 'glass')
+      } else if (index > 9 && index < 15) {
+        item.setAttribute('data-trash', 'metal')
+      } else if (index > 14 && index < 20) {
+        item.setAttribute('data-trash', 'organic')
+      } else if (index > 19 && index < 25) {
+        item.setAttribute('data-trash', 'paper')
+      } else if (index > 24 && index < 30) {
+        item.setAttribute('data-trash', 'plastic')
+      }
       item.style.left = `${positionX}%`;
-      item.animate([{ top: "0" }, { top: "100%" }], {
+      item.animate([{top: "0"}, {top: "100%"}], {
         duration: transition,
         fill: "forwards",
       });
+      let timeout
+      timeout = setTimeout(() => {
+        item.remove();
+        if (pontuation > 0 && item.dataset.trash === currentTrashSelected) {
+          pontuation = pontuation - 3
+          faults--
+        }
+      }, transition)
       card.appendChild(item);
       item.addEventListener("mousedown", (event) => {
-        card.addEventListener("mouseup", () => {
-          event.target?.remove();
-          if (time > 200) {
-            time = time - 10;
+        if (event.target.dataset.trash === currentTrashSelected) {
+          pontuation = pontuation + 3;
+        } else {
+          if(pontuation > 0) {
+            pontuation = pontuation - 3;
           }
-          if (transition > 700) {
-            transition = transition - 10;
+          if(faults > 0) {
+            faults--
           }
-        });
+
+        }
+        event.target.remove();
+        clearTimeout(timeout)
+        if (time > 200) {
+          time = time - 10;
+        }
+        if (transition > 700) {
+          transition = transition - 10;
+        }
       });
     };
     sorteTrashItem();
     setTimeout(() => {
-      initGame();
+      if (faults > 0) {
+        initGame();
+      }
     }, time);
   };
   onMount(() => {
@@ -54,13 +91,19 @@
     card.addEventListener("mouseup", () => {
       card.classList.remove("clicked");
     });
-    currentTrash.subscribe((item) => {
-      if (!item || item === null || item === undefined || item === "") {
+    currentGame.subscribe((item) => {
+      if (!item.data.dumpsterSelected) {
+        isGameOK = false;
+        goto("/");
+        return;
+      }
+      if (!item.data.dumpsterSelected[0] || !item.data.dumpsterSelected[0] === null || !item.data.dumpsterSelected[0] === undefined || !item.data.dumpsterSelected[0] === "") {
         isGameOK = false;
         goto("/");
         return;
       }
       isGameOK = true;
+      currentTrashSelected = item.data.dumpsterSelected[0];
     });
     if (isGameOK) {
       initGame();
@@ -71,7 +114,15 @@
 {#if isGameOK}
   <main class="page">
     <div class="card game-card diurnal">
-      <div class="sun-and-moon" />
+      <div class="score">
+        <h2>Pontuação</h2>
+        <h3>{pontuation}</h3>
+      </div>
+      <div class="faults">
+        <h2>Faltas</h2>
+        <h3>{faults}/7</h3>
+      </div>
+      <div class="sun-and-moon"/>
       <svg
         class="cloud"
         width="916"
@@ -149,8 +200,8 @@
             y2="51.5"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#5B99FF" />
-            <stop offset="1" stop-color="#0F5CDC" />
+            <stop stop-color="#5B99FF"/>
+            <stop offset="1" stop-color="#0F5CDC"/>
           </linearGradient>
           <linearGradient
             id="paint1_linear_107_2"
@@ -160,8 +211,8 @@
             y2="86.7637"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#5B99FF" />
-            <stop offset="1" stop-color="#0F5CDC" />
+            <stop stop-color="#5B99FF"/>
+            <stop offset="1" stop-color="#0F5CDC"/>
           </linearGradient>
           <linearGradient
             id="paint2_linear_107_2"
@@ -171,8 +222,8 @@
             y2="78.1667"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#5B99FF" />
-            <stop offset="1" stop-color="#0F5CDC" />
+            <stop stop-color="#5B99FF"/>
+            <stop offset="1" stop-color="#0F5CDC"/>
           </linearGradient>
           <linearGradient
             id="paint3_linear_107_2"
@@ -182,8 +233,8 @@
             y2="113.43"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#5B99FF" />
-            <stop offset="1" stop-color="#0F5CDC" />
+            <stop stop-color="#5B99FF"/>
+            <stop offset="1" stop-color="#0F5CDC"/>
           </linearGradient>
           <linearGradient
             id="paint4_linear_107_2"
@@ -193,8 +244,8 @@
             y2="71.28"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#5B99FF" />
-            <stop offset="1" stop-color="#0F5CDC" />
+            <stop stop-color="#5B99FF"/>
+            <stop offset="1" stop-color="#0F5CDC"/>
           </linearGradient>
           <linearGradient
             id="paint5_linear_107_2"
@@ -204,8 +255,8 @@
             y2="118.167"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#5B99FF" />
-            <stop offset="1" stop-color="#0F5CDC" />
+            <stop stop-color="#5B99FF"/>
+            <stop offset="1" stop-color="#0F5CDC"/>
           </linearGradient>
           <linearGradient
             id="paint6_linear_107_2"
@@ -215,8 +266,8 @@
             y2="95.28"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#5B99FF" />
-            <stop offset="1" stop-color="#0F5CDC" />
+            <stop stop-color="#5B99FF"/>
+            <stop offset="1" stop-color="#0F5CDC"/>
           </linearGradient>
           <linearGradient
             id="paint7_linear_107_2"
@@ -226,8 +277,8 @@
             y2="142.167"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#5B99FF" />
-            <stop offset="1" stop-color="#0F5CDC" />
+            <stop stop-color="#5B99FF"/>
+            <stop offset="1" stop-color="#0F5CDC"/>
           </linearGradient>
           <linearGradient
             id="paint8_linear_107_2"
@@ -237,8 +288,8 @@
             y2="51.1667"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#5B99FF" />
-            <stop offset="1" stop-color="#0F5CDC" />
+            <stop stop-color="#5B99FF"/>
+            <stop offset="1" stop-color="#0F5CDC"/>
           </linearGradient>
           <linearGradient
             id="paint9_linear_107_2"
@@ -248,8 +299,8 @@
             y2="91.1667"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#5B99FF" />
-            <stop offset="1" stop-color="#0F5CDC" />
+            <stop stop-color="#5B99FF"/>
+            <stop offset="1" stop-color="#0F5CDC"/>
           </linearGradient>
           <linearGradient
             id="paint10_linear_107_2"
@@ -259,8 +310,8 @@
             y2="77.1667"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#5B99FF" />
-            <stop offset="1" stop-color="#0F5CDC" />
+            <stop stop-color="#5B99FF"/>
+            <stop offset="1" stop-color="#0F5CDC"/>
           </linearGradient>
           <linearGradient
             id="paint11_linear_107_2"
@@ -270,8 +321,8 @@
             y2="117.167"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#5B99FF" />
-            <stop offset="1" stop-color="#0F5CDC" />
+            <stop stop-color="#5B99FF"/>
+            <stop offset="1" stop-color="#0F5CDC"/>
           </linearGradient>
         </defs>
       </svg>
@@ -283,6 +334,7 @@
   .page {
     background-color: transparent;
     display: flex;
+
     & .cloud {
       position: absolute;
       top: 50px;
@@ -316,8 +368,53 @@
         flex-direction: column;
         width: 100%;
       }
+
+      & .score {
+        width: 200px;
+        height: auto;
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 0.5em;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        & h2 {
+          font-size: var(--fs-h2);
+        }
+
+        & h3 {
+          font-size: var(--fs-h3);
+          color: rgb(var(--primary-color));
+        }
+      }
+
+      & .faults {
+        width: 200px;
+        height: auto;
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: 0.5em;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        & h2 {
+          font-size: var(--fs-h2);
+        }
+
+        & h3 {
+          font-size: var(--fs-h3);
+          color: #b72a2a;
+        }
+      }
     }
   }
+
   @keyframes cloud {
     to {
       left: 100%;
