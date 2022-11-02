@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-netlify';
+import node from "@sveltejs/adapter-node";
 
 import preprocess from 'svelte-preprocess';
 
@@ -9,10 +9,7 @@ const config = {
 	preprocess: preprocess(),
 
 	kit: {
-		adapter:	adapter({
-			edge: false,
-			split: true
-		}),
+		adapter: node({ env: { port: process|.env.PORT } }),
 	}
 };
 
