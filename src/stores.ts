@@ -74,7 +74,7 @@ export const trashItemsToMemory = {
     ],
   },
 };
-export const connectionAPI = "http://127.0.0.1:3000";
+export const connectionAPI = "https://backend-rg-game.herokuapp.com";
 
 export const musics = {
   musics: [
