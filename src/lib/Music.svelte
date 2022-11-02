@@ -1,14 +1,26 @@
 <script lang="ts">
-  let isMusic = false;
+  import {isMusic} from "../stores";
+
+  let lastValue = false;
+  let isLoading = false
+  const turnMusic = async () => {
+    isMusic.subscribe(value => {
+      lastValue = value;
+    });
+    isMusic.update(value => {
+      return !lastValue
+    })
+  }
 </script>
-<button class="music" on:click={() => isMusic = !isMusic}>
-  {#if isMusic}
+
+<button class="music" on:click={() => turnMusic()}>
+  {#if lastValue}
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M11 5L6 9H2V15H6L11 19V5Z" stroke="rgb(var(--text-secondary))" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round"/>
     </svg>
   {/if}
-  {#if !isMusic}
+  {#if !lastValue}
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M11 5L6 9H2V15H6L11 19V5Z" stroke="rgb(var(--text-secondary))" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round"/>
@@ -30,6 +42,7 @@
     justify-content: center;
     cursor: url(../lib/assets/cursors/pointer.png), pointer;
     border-radius: var(--brd-radius);
+
     & svg {
       pointer-events: none;
     }

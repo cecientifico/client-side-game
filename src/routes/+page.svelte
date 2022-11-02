@@ -24,6 +24,13 @@
   let scoreLoaded = false;
   let lastResult = 0;
   let loadedPage = false;
+  let user = '';
+  let points = {
+    modality: ['adventure', 'casually', 'arcade'],
+    displayName: ['Aventura', 'Casual', 'Arcade'],
+    index: 0,
+    points: 0,
+  }
   onMount(async () => {
     onAuthStateChanged(auth, (user: User) => {
       if (!user) {
@@ -36,18 +43,19 @@
         displayNameUser = 'Anônimo';
         return;
       }
+      user = user;
       loadedPage = true;
       urlProfileImageUser = user.photoURL;
       displayNameUser = user.displayName;
       axios
-        .get(`${connectionAPI}/user-results/${user.uid}`)
+        .get(`${connectionAPI}/user-results/${points.modality[points.index]}/${user.uid}`)
         .then((response) => {
-          console.log(response)
-          const {results} = response.data.result;
-          lastResult = results[0].results;
+          const results = response.data.result[points.modality[points.index]][0].results;
+          points.points = results;
           scoreLoaded = true;
         })
         .catch(() => {
+          points.points = 0;
           scoreLoaded = true;
         });
     });
@@ -63,16 +71,39 @@
     menu.classList.remove("active");
   };
   const gotoGame = async ({game, displayName}: Game) => {
-    // currentGame.update(() => ({
-    //   game,
-    //   displayName,
-    // }))
     await goto(`${game}/pre-game`)
   }
   const signOutUser = () => {
     signOut(auth);
     loadedPage = false;
   };
+  const turnModalityResults = async (type) => {
+    if (type === 'forward') {
+      if (points.index > 1) {
+        points.index = 0;
+      } else {
+        points.index++
+      }
+    } else {
+      if (points.index < 1) {
+        points.index = 2;
+      } else {
+        points.index--
+      }
+    }
+    scoreLoaded = false;
+    axios
+      .get(`${connectionAPI}/user-results/${points.modality[points.index]}/${auth.currentUser.uid}`)
+      .then((response) => {
+        const results = response.data.result[points.modality[points.index]][0].results;
+        points.points = results;
+        scoreLoaded = true;
+      })
+      .catch(() => {
+        points.points = 0;
+        scoreLoaded = true;
+      });
+  }
 </script>
 
 {#if loadedPage}
@@ -109,18 +140,41 @@
           </ul>
         </div>
         <div class="score">
-          {#if !scoreLoaded}
-            <div class="loading-animation">
-              <div class="ball ball-ne"></div>
-              <div class="ball ball-nw"></div>
-              <div class="ball ball-sw"></div>
-              <div class="ball ball-se"></div>
+          {#if !auth.currentUser.isAnonymous}
+            <div class="col">
+              <button class="navigate" on:click={() => turnModalityResults('backword')}>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 512 512">
+                  <path fill="none" stroke="rgb(var(--primary-color))" stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="48"
+                        d="M328 112L184 256l144 144"/>
+                </svg>
+              </button>
+            </div>
+            <div class="col">
+              {#if !scoreLoaded}
+                <div class="loading-animation">
+                  <div class="ball ball-ne"></div>
+                  <div class="ball ball-nw"></div>
+                  <div class="ball ball-sw"></div>
+                  <div class="ball ball-se"></div>
+                </div>
+              {/if}
+              {#if scoreLoaded}
+                <h3>{points.displayName[points.index]}</h3>
+                <h2>{points.points}</h2>
+              {/if}
+            </div>
+            <div class="col">
+              <button class="navigate" on:click={() => turnModalityResults('forward')}>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 512 512">
+                  <path fill="none" stroke="rgb(var(--primary-color))" stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="48"
+                        d="M184 112l144 144-144 144"/>
+                </svg>
+              </button>
             </div>
           {/if}
-          {#if scoreLoaded}
-            <h3>Score</h3>
-            <h2>{lastResult}</h2>
-          {/if}
+
         </div>
       </header>
       <main class="content">
@@ -531,7 +585,7 @@
                 <p>Aventura</p>
                 <div class="icon adventure"></div>
               </li>
-              <li on:click={() => gotoGame({game: 'memory-game', displayName:'Casual'})}>
+              <li on:click={() => gotoGame({game: 'casually', displayName:'Casual'})}>
                 <p>Casual</p>
                 <div class="icon eventual"></div>
               </li>
@@ -639,7 +693,28 @@
           display: flex;
           align-items: center;
           justify-content: center;
-          flex-direction: column;
+          width: max-content;
+          column-gap: 0.5em;
+
+          & .col {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            width: max-content;
+          }
+
+          & .navigate {
+            width: 1.2em;
+            height: 1.2em;
+            cursor: url(../lib/assets/cursors/pointer.png), pointer;
+            border: none;
+            outline: none;
+            background-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
 
           h3 {
             font-size: var(--fs-h3);
@@ -715,6 +790,7 @@
               flex-direction: column;
               cursor: url(../lib/assets/cursors/pointer.png), pointer;
               backdrop-filter: blur(62px);
+
               &:nth-child(2) {
                 transform: translateX(50px);
               }
@@ -722,6 +798,7 @@
               &:nth-child(3) {
                 transform: translate(120px);
               }
+
               & p {
                 font-size: var(--fs-p);
               }
@@ -834,6 +911,7 @@
               row-gap: 0.5em;
               overflow-y: auto;
               padding-bottom: 60px;
+
               & li {
                 position: relative;
                 width: 50px;
@@ -859,6 +937,7 @@
                   position: absolute;
                   left: 50%;
                   transform: translateX(-50%);
+
                   &.adventure {
                     background-image: url("https://firebasestorage.googleapis.com/v0/b/reciclage-game-416af.appspot.com/o/icons%2Fadventure.png?alt=media&token=879df8a7-0ffb-4e2a-9853-73ef3851a5c7");
                   }

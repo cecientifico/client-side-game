@@ -1,10 +1,16 @@
 <script lang="ts">
+  import {beforeNavigate} from "$app/navigation";
+  import {getAuth} from "firebase/auth";
+
   type Matches = {
     part01: string;
     part02: string;
   };
   import {onMount} from "svelte";
-  import {trashItems, currentGame,} from "../../stores";
+  import {trashItems, currentGame, isMusic, connectionAPI,} from "../../stores";
+  import Overlay from "$lib/Overlay.svelte";
+  import Modal from "$lib/Modal.svelte";
+  import axios from "axios";
 
   let items = [];
   let time = 3;
@@ -15,7 +21,19 @@
   };
   let isProcessing = false;
   let maches: Matches[] = [];
-  let trashsFromStores = []
+  let trashsFromStores = [];
+  let gameOver = false;
+  const auth = getAuth();
+  let userName = auth.currentUser?.displayName;
+  let userEmail = auth.currentUser?.email;
+  let userID = auth.currentUser?.uid;
+  let modality = "casually";
+  beforeNavigate(() => {
+    isGaming = false;
+    isMusic.update(value => {
+      return false
+    })
+  })
   currentGame.subscribe(value => {
     trashsFromStores.push(value)
   })
@@ -43,6 +61,26 @@
   const initTime = () => {
     setTimeout(() => {
       time++;
+      if(maches.length === 10) {
+        isGaming = false;
+        gameOver = true;
+        isMusic.update(value => {
+          return false
+        })
+        if(auth.currentUser.isAnonymous) return
+        axios.post(`${connectionAPI}/new-result`, {
+          userName,
+          userEmail,
+          userID,
+          modality,
+          userResult: time,
+        })
+          .then((response) => {
+            console.log(response)
+          }).catch((error) => {
+          console.log(error)
+        })
+      }
       if (isGaming) {
         initTime();
       }
@@ -124,8 +162,6 @@
               }
             }
           }
-        } else {
-          console.log(selected);
         }
       });
       if (index === 19) {
@@ -139,7 +175,13 @@
 </script>
 
 <main class="page">
+  {#if gameOver}
+    <Modal score={time} displayName="Casual" preGame="casually"/>
+  {/if}
   <div class="card">
+    {#if gameOver}
+      <Overlay/>
+    {/if}
     <div class="content">
 
     </div>
@@ -656,6 +698,12 @@
       box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.1);
       cursor: url(../../lib/assets/cursors/cursor.png), default;
 
+      @media (max-width: 800px) {
+        border-radius: 0;
+        height: 100%;
+        flex-direction: column-reverse;
+      }
+
       & .content {
         width: calc(100% - 200px);
         height: 100%;
@@ -667,12 +715,28 @@
         margin: auto;
         column-gap: 0.5em;
         row-gap: 0.5em;
+        z-index: 100;
+
+        @media (max-width: 800px) {
+          width: 100%;
+          column-gap: 0.1em;
+          row-gap: 0;
+          display: grid;
+          grid-template-columns: 25% 25% 25% 25%;
+          grid-template-rows: 20% 20% 20% 20% 20%;
+        }
       }
 
       & .pontuation {
         width: 200px;
         height: 100%;
-
+        @media (max-width: 800px) {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          height: max-content;
+        }
         & svg {
           position: absolute;
           bottom: 0;
@@ -685,7 +749,9 @@
           align-items: center;
           margin-top: 3em;
           position: relative;
-
+          @media (max-width: 800px) {
+            margin-top: 0;
+          }
           & h2 {
             font-size: var(--fs-h2);
             color: rgb(var(--text-secondary));

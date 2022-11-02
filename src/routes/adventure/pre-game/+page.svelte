@@ -4,11 +4,12 @@
     data: any;
   }
   import {currentGame} from '../../../stores';
-  import {goto} from "$app/navigation";
+  import {goto,beforeNavigate, afterNavigate} from "$app/navigation";
   import Cloud from "$lib/Cloud.svelte";
   import Music from "$lib/Music.svelte";
 
   let dumpsterSelected = [];
+
   const changeInitGame = () => {
     const buttonInitGame = document.querySelector<HTMLButtonElement>('.init-game');
     if (dumpsterSelected.length < 1) {
@@ -268,7 +269,6 @@
   .page {
     background-color: transparent;
     display: flex;
-
     .card {
       position: relative;
       overflow: hidden;
@@ -283,6 +283,7 @@
       flex-direction: column;
       margin: auto;
       box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+      cursor: url(../../../lib/assets/cursors/cursor.png), default;
       @media (max-width: 800px) {
         border-radius: 0;
         height: 100%;
@@ -296,6 +297,7 @@
         position: absolute;
         bottom: 0.5em;
         right: 0.5em;
+        z-index: 0;
       }
 
       & .container {
@@ -306,6 +308,7 @@
         left: 0;
         right: 0;
         bottom: 0;
+        z-index: 1;
 
         & header {
           width: 100%;
@@ -336,6 +339,9 @@
 
           & .row {
             width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             column-gap: 0.5em;
 
             &:nth-child(2) {
@@ -343,11 +349,9 @@
               position: relative;
               height: 2.5em;
               align-items: center;
+              column-gap: 0.5em;
 
               & button {
-                position: absolute;
-                left: 50%;
-                transform: translateX(-50%);
                 width: 40%;
                 height: 2em;
                 background-color: rgb(var(--primary-color));
@@ -359,7 +363,8 @@
                 border: none;
                 outline: none;
                 transition: background-color linear 200ms;
-
+                cursor: url(../../../lib/assets/cursors/pointer.png), pointer;
+                backdrop-filter: blur(62px);
                 &:disabled {
                   background-color: rgba(var(--primary-color), 0.5);
                 }
@@ -373,6 +378,11 @@
             grid-template-rows: 7rem 7rem;
             width: max-content;
             gap: 0.2em;
+
+            @media (max-width: 700px) {
+              grid-template-columns: 7rem 7rem;
+              grid-template-rows: 7rem 7rem 7rem;
+            }
 
             & .checkbox-input {
               clip: rect(0 0 0 0);
@@ -394,6 +404,7 @@
             }
 
             & .checkbox-tile {
+              cursor: url(../../../lib/assets/cursors/pointer.png), pointer;
               display: flex;
               flex-direction: column;
               align-items: center;
@@ -404,7 +415,6 @@
               background-color: #fff;
               box-shadow: 0 5px 10px rgba(#000, 0.1);
               transition: 0.15s ease;
-              cursor: pointer;
               position: relative;
 
               &.paper {

@@ -36,7 +36,7 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 10000;
+  z-index: 1;
   background-position: center center;
   background-repeat: no-repeat;
   background-size: contain;
@@ -155,7 +155,11 @@ body {
         height: 4.5em;
         cursor: url(../lib/assets/cursors/pointer.png), pointer !important;
         background-color: transparent;
-
+        @media (max-width: 800px) {
+          width: 4em;
+          height: 4em;
+          margin: auto;
+        }
         &.open {
           & .flip-card-inner {
             transform: rotateY(180deg);
