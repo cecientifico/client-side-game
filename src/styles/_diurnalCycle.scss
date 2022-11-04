@@ -1,5 +1,11 @@
 .card.diurnal {
   animation: sky 60s linear 0s forwards infinite;
+  @media (max-width: 800px) {
+    animation: none;
+  }
+  @media (max-width: 700px) {
+    animation: none;
+  }
   transition: background 1s ease-out;
   will-change: color;
 }
