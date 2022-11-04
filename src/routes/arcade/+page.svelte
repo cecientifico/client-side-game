@@ -142,6 +142,8 @@
     function endGame() {
       player.start = false;
       containerWrapper.classList.remove("hide");
+      const container_butons = document.querySelector('.controll-game')
+      container_butons.classList.add('hide')
       isMusic.update(() => {
         return false
       })
@@ -162,7 +164,8 @@
 
     function start() {
       containerWrapper.classList.add("hide");
-
+      const container_butons = document.querySelector('.controll-game')
+      container_butons.classList.remove('hide')
       document.querySelectorAll(".trash").forEach(t => {
         t.classList.add("anim");
       });
@@ -227,7 +230,8 @@
 <main class="arcade-container">
 
   <div class="container">
-    <audio class="buzina-audio-html" src="https://firebasestorage.googleapis.com/v0/b/reciclage-game-416af.appspot.com/o/sound_effects%2Fbuzina.mp3?alt=media&token=b940c5fa-644d-462c-a21a-6a6805401c1c"></audio>
+    <audio class="buzina-audio-html"
+           src="https://firebasestorage.googleapis.com/v0/b/reciclage-game-416af.appspot.com/o/sound_effects%2Fbuzina.mp3?alt=media&token=b940c5fa-644d-462c-a21a-6a6805401c1c"></audio>
     <div class="container-wrapper">
       <div class="music">
         <Music/>
@@ -256,11 +260,21 @@
     </div>
   </div>
 
-  <div class="controll-game">
+  <div class="controll-game hide">
 
     <div>
-      <button data-dir="ArrowLeft">left</button>
-      <button data-dir="ArrowRight">right</button>
+      <button data-dir="ArrowLeft">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 512 512">
+          <path fill="none" stroke="rgb(255, 255, 255)" stroke-linecap="round" stroke-linejoin="round" stroke-width="48"
+                d="M244 400L100 256l144-144M120 256h292"/>
+        </svg>
+      </button>
+      <button data-dir="ArrowRight">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 512 512">
+          <path fill="none" stroke="rgb(255, 255, 255)" stroke-linecap="round" stroke-linejoin="round" stroke-width="48"
+                d="M268 112l144 144-144 144M392 256H100"/>
+        </svg>
+      </button>
     </div>
 
   </div>

@@ -424,14 +424,15 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     overflow: hidden;
+    cursor: url(../lib/assets/cursors/cursor.png), default !important;
   }
 
   .container .container-wrapper {
     width: 100%;
     height: 100%;
     position: absolute;
-    left: 0px;
-    top: 0px;
+    left: 0;
+    top: 0;
     background-color: rgba(2, 13, 26, 0.616);
     color: white;
     transition: 0.3s linear;
@@ -441,7 +442,8 @@ body {
     align-items: center;
     justify-content: center;
     user-select: none;
-    cursor: pointer;
+    text-align: center;
+    cursor: url(../lib/assets/cursors/pointer.png), pointer !important;
   }
 
   .container .container-wrapper h1 {
@@ -516,16 +518,20 @@ body {
     background-repeat: no-repeat;
     z-index: 2000;
   }
+
   .trash:nth-child(1) {
     left: auto;
     right: -80px;
   }
+
   .trash.anim {
     animation: a 4s linear infinite;
   }
+
   .trash.anim:nth-child(1) {
     animation: a 4s 2s linear infinite;
   }
+
   .house {
     position: absolute;
     height: 100px;
@@ -538,14 +544,17 @@ body {
     background-repeat: no-repeat;
     z-index: 2000;
   }
+
   .house.anim {
     animation: a 4s 1s linear infinite;
   }
+
   .house.anim:nth-child(2) {
     left: auto;
     right: -120px;
     animation: a 4s 1s linear infinite;
   }
+
   .house.anim:nth-child(3) {
     left: auto;
     right: -120px;
@@ -564,36 +573,48 @@ body {
   .controll-game {
     z-index: 1000000;
     position: absolute;
-    bottom: 0px;
-    left: 0px;
+    bottom: 0;
+    left: 0;
     width: 100%;
     height: 200px;
     background-color: rgb(255, 255, 255);
     text-align: center;
-    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 10px;
     display: none;
+    cursor: url(../lib/assets/cursors/cursor.png), default !important;
   }
 
   .controll-game div {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-evenly;
     gap: 10px;
     width: 100%;
+    height: 100%;
   }
 
   .controll-game button {
-    width: 200px;
-    height: 50px;
+    width: 40%;
+    height: 90%;
     border-radius: 6px;
     border: none;
     outline: none;
-    cursor: pointer;
     user-select: none;
+    cursor: url(../lib/assets/cursors/pointer.png), pointer !important;
+    &:nth-child(1) {
+      background-color: rgb(221, 83, 83);
+    }
+
+    &:nth-child(2) {
+      background-color: rgb(255, 136, 75);
+    }
+    & svg {
+      width: 30px;
+      height: 30px;
+    }
   }
 
   @media screen and (max-width: 600px) {
@@ -617,8 +638,8 @@ body {
     .controll-game {
       display: flex;
       position: fixed;
-      bottom: 0px;
-      left: 0px;
+      bottom: 0;
+      left: 0;
     }
   }
 }
@@ -627,6 +648,7 @@ body {
 .nav-items {
   &.active {
     position: relative;
+
     &::after {
       content: '';
       display: block;
@@ -645,6 +667,7 @@ body {
 .world-hanks {
   width: 300px;
   row-gap: 0.3em;
+
   li {
     display: flex;
     align-items: center;
@@ -659,6 +682,7 @@ body {
     margin-top: 0.5em;
     cursor: url(../lib/assets/cursors/pointer.png), pointer;
     color: white;
+
     &:last-child {
       margin-bottom: 0.5em;
     }
