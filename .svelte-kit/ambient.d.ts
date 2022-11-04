@@ -137,7 +137,6 @@ declare module '$env/static/private' {
 	export const npm_package_devDependencies_prettier_plugin_svelte: string;
 	export const npm_package_scripts_preview: string;
 	export const INIT_CWD: string;
-	export const NODE_ENV: string;
 }
 
 /**
@@ -278,7 +277,6 @@ declare module '$env/dynamic/private' {
 		npm_package_devDependencies_prettier_plugin_svelte: string;
 		npm_package_scripts_preview: string;
 		INIT_CWD: string;
-		NODE_ENV: string;
 		[key: string]: string | undefined;
 	}
 }

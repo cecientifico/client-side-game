@@ -212,7 +212,14 @@
 
     function randomBackgroundDrop() {
       const a = Math.floor(Math.random() * 5)
-      return "url('https://recicla-game/src/lib/assets/images/icons/organico-" + a + ".png')"
+      const images = [
+        'https://firebasestorage.googleapis.com/v0/b/reciclage-game-416af.appspot.com/o/icons%2Forganico-0.png?alt=media&token=97ced91e-44e2-44e7-95b9-1a72c3e42bc5',
+        'https://firebasestorage.googleapis.com/v0/b/reciclage-game-416af.appspot.com/o/icons%2Forganico-1.png?alt=media&token=7e5f351f-8904-4e85-aef5-8feeab0a07d1',
+        'https://firebasestorage.googleapis.com/v0/b/reciclage-game-416af.appspot.com/o/icons%2Forganico-2.png?alt=media&token=faa51787-6d4b-4efb-90c8-a641fc94677c',
+        'https://firebasestorage.googleapis.com/v0/b/reciclage-game-416af.appspot.com/o/icons%2Forganico-3.png?alt=media&token=174ca91e-fdc3-4312-9059-656d18ba7f7f',
+        'https://firebasestorage.googleapis.com/v0/b/reciclage-game-416af.appspot.com/o/icons%2Forganico-4.png?alt=media&token=3468aa61-aa38-4456-97a5-4c528172c591',
+      ]
+      return `url(${images[a]})`
     }
   })
 
@@ -220,7 +227,7 @@
 <main class="arcade-container">
 
   <div class="container">
-    <audio class="buzina-audio-html" src="https://recicla-game/src/lib/assets/sounds/buzina.mp3"></audio>
+    <audio class="buzina-audio-html" src="https://firebasestorage.googleapis.com/v0/b/reciclage-game-416af.appspot.com/o/sound_effects%2Fbuzina.mp3?alt=media&token=b940c5fa-644d-462c-a21a-6a6805401c1c"></audio>
     <div class="container-wrapper">
       <div class="music">
         <Music/>
