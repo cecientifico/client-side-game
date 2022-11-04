@@ -3,7 +3,8 @@
 
   let lastValue = false;
   let isLoading = false
-  const turnMusic = async () => {
+  const turnMusic = async (event: any) => {
+    event.stopPropagation();
     isMusic.subscribe(value => {
       lastValue = value;
     });
@@ -13,7 +14,7 @@
   }
 </script>
 
-<button class="music" on:click={() => turnMusic()}>
+<button class="music" on:click={(event) => turnMusic(event)}>
   {#if lastValue}
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M11 5L6 9H2V15H6L11 19V5Z" stroke="rgb(var(--text-secondary))" stroke-width="2" stroke-linecap="round"
@@ -33,7 +34,6 @@
 </button>
 <style lang="scss">
   button {
-    background-color: transparent;
     border: none;
     width: 1.5em;
     height: 1.5em;
@@ -42,7 +42,7 @@
     justify-content: center;
     cursor: url(../lib/assets/cursors/pointer.png), pointer;
     border-radius: var(--brd-radius);
-
+    background-color: white;
     & svg {
       pointer-events: none;
     }

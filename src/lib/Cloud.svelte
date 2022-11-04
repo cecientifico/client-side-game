@@ -211,6 +211,13 @@
     transition: translateX(-50%);
     will-change: left;
     animation: cloud 10000ms linear 0s forwards infinite;
+    will-change: left;
+    @media (max-width: 800px) {
+      animation: none;
+    }
+    @media (max-width: 700px) {
+      animation: none;
+    }
   }
 
   @keyframes cloud {

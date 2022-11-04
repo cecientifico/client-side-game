@@ -1,8 +1,4 @@
 <script lang="ts">
-  type Game = {
-    game: string;
-    data: any;
-  }
   import {currentGame} from '../../../stores';
   import {goto} from "$app/navigation";
   import Cloud from "$lib/Cloud.svelte";
@@ -37,7 +33,7 @@
     changeInitGame()
   }
   const confirmGameMemory = () => {
-    currentGame.update(value => {
+    currentGame.update(() => {
       return {
         game: 'memory',
         data: {
@@ -45,18 +41,17 @@
         }
       }
     })
-    goto('/casually', {
-      replaceState: false,
-    })
+    goto('/casually')
   }
 </script>
 <main class="page">
-  <div class="card">
+  <div class="card diurnal">
     <Cloud/>
+    <div class="sun-and-moon"></div>
     <div class="container">
       <header>
-        <h3>O que Vamos Memorizar Hoje?</h3>
-        <p>Selecione 2 (dois) modalidades. </p>
+        <h3>O que vamos memorizar hoje?</h3>
+        <p>Selecione 2 (duas) modalidades.</p>
       </header>
       <main>
         <div class="row">
@@ -319,17 +314,13 @@
           justify-content: center;
           flex-direction: column;
           padding: 0.5em;
-          color: rgb(var(--text-secondary));
-
           & h3 {
             font-size: var(--fs-h3);
           }
-
           & p {
             font-size: var(--fs-p);
           }
         }
-
         & main {
           width: 100%;
           height: calc(100% - 2.5em);
@@ -337,21 +328,18 @@
           display: flex;
           flex-direction: column;
           justify-content: space-evenly;
-
           & .row {
             width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
             column-gap: 0.5em;
-
             &:nth-child(2) {
               display: flex;
               position: relative;
               height: 2.5em;
               align-items: center;
               column-gap: 0.5em;
-
               & button {
                 width: 40%;
                 height: 2em;

@@ -5,7 +5,7 @@
 /// <reference types="@sveltejs/kit" />
 
 /**
- * Environment variables [loaded by Vite](https://vitejs.dev/guide/env-and-mode.html#env-files) from `.env` files and `process.env`. Like [`$env/dynamic/private`](https://kit.svelte.dev/docs/modules#$env-dynamic-private), this module cannot be imported into client-side code. This module only includes variables that _do not_ begin with [`config.kit.env.publicPrefix`](https://kit.svelte.dev/docs/configuration#kit-env-publicprefix).
+ * Environment variables [loaded by Vite](https://vitejs.dev/guide/env-and-mode.html#env-files) from `.env` files and `process.env`. Like [`$env/dynamic/private`](https://kit.svelte.dev/docs/modules#$env-dynamic-private), this module cannot be imported into public-facing code. This module only includes variables that _do not_ begin with [`config.kit.env.publicPrefix`](https://kit.svelte.dev/docs/configuration#env).
  * 
  * _Unlike_ [`$env/dynamic/private`](https://kit.svelte.dev/docs/modules#$env-dynamic-private), the values exported from this module are statically injected into your bundle at build time, enabling optimisations like dead code elimination.
  * 
@@ -28,9 +28,9 @@
 declare module '$env/static/private' {
 	export const GJS_DEBUG_TOPICS: string;
 	export const TERM_SESSION_ID: string;
-	export const npm_package_dependencies_pensador_api: string;
 	export const LANGUAGE: string;
 	export const USER: string;
+	export const npm_package_dependencies__sveltejs_adapter_node: string;
 	export const npm_config_version_commit_hooks: string;
 	export const npm_config_user_agent: string;
 	export const npm_config_bin_links: string;
@@ -44,6 +44,7 @@ declare module '$env/static/private' {
 	export const LESS: string;
 	export const npm_package_devDependencies_sass: string;
 	export const npm_package_devDependencies__typescript_eslint_parser: string;
+	export const npm_package_devDependencies__sveltejs_adapter_netlify: string;
 	export const DESKTOP_SESSION: string;
 	export const npm_package_devDependencies_eslint_config_prettier: string;
 	export const GIO_LAUNCHED_DESKTOP_FILE: string;
@@ -51,6 +52,7 @@ declare module '$env/static/private' {
 	export const ZSH: string;
 	export const LSCOLORS: string;
 	export const npm_package_devDependencies_svelte_preprocess: string;
+	export const npm_package_engines_node: string;
 	export const npm_config_init_license: string;
 	export const GTK_MODULES: string;
 	export const GNOME_SHELL_SESSION_MODE: string;
@@ -135,10 +137,11 @@ declare module '$env/static/private' {
 	export const npm_package_devDependencies_prettier_plugin_svelte: string;
 	export const npm_package_scripts_preview: string;
 	export const INIT_CWD: string;
+	export const NODE_ENV: string;
 }
 
 /**
- * Similar to [`$env/static/private`](https://kit.svelte.dev/docs/modules#$env-static-private), except that it only includes environment variables that begin with [`config.kit.env.publicPrefix`](https://kit.svelte.dev/docs/configuration#kit-env-publicprefix) (which defaults to `PUBLIC_`), and can therefore safely be exposed to client-side code.
+ * Similar to [`$env/static/private`](https://kit.svelte.dev/docs/modules#$env-static-private), except that it only includes environment variables that begin with [`config.kit.env.publicPrefix`](https://kit.svelte.dev/docs/configuration#env) (which defaults to `PUBLIC_`), and can therefore safely be exposed to client-side code.
  * 
  * Values are replaced statically at build time.
  * 
@@ -151,9 +154,9 @@ declare module '$env/static/public' {
 }
 
 /**
- * This module provides access to runtime environment variables, as defined by the platform you're running on. For example if you're using [`adapter-node`](https://github.com/sveltejs/kit/tree/master/packages/adapter-node) (or running [`vite preview`](https://kit.svelte.dev/docs/cli)), this is equivalent to `process.env`. This module only includes variables that _do not_ begin with [`config.kit.env.publicPrefix`](https://kit.svelte.dev/docs/configuration#kit-env-publicprefix).
+ * This module provides access to runtime environment variables, as defined by the platform you're running on. For example if you're using [`adapter-node`](https://github.com/sveltejs/kit/tree/master/packages/adapter-node) (or running [`vite preview`](https://kit.svelte.dev/docs/cli)), this is equivalent to `process.env`. This module only includes variables that _do not_ begin with [`config.kit.env.publicPrefix`](https://kit.svelte.dev/docs/configuration#env).
  * 
- * This module cannot be imported into client-side code.
+ * This module cannot be imported into public-facing code.
  * 
  * ```ts
  * import { env } from '$env/dynamic/private';
@@ -166,9 +169,9 @@ declare module '$env/dynamic/private' {
 	export const env: {
 		GJS_DEBUG_TOPICS: string;
 		TERM_SESSION_ID: string;
-		npm_package_dependencies_pensador_api: string;
 		LANGUAGE: string;
 		USER: string;
+		npm_package_dependencies__sveltejs_adapter_node: string;
 		npm_config_version_commit_hooks: string;
 		npm_config_user_agent: string;
 		npm_config_bin_links: string;
@@ -182,6 +185,7 @@ declare module '$env/dynamic/private' {
 		LESS: string;
 		npm_package_devDependencies_sass: string;
 		npm_package_devDependencies__typescript_eslint_parser: string;
+		npm_package_devDependencies__sveltejs_adapter_netlify: string;
 		DESKTOP_SESSION: string;
 		npm_package_devDependencies_eslint_config_prettier: string;
 		GIO_LAUNCHED_DESKTOP_FILE: string;
@@ -189,6 +193,7 @@ declare module '$env/dynamic/private' {
 		ZSH: string;
 		LSCOLORS: string;
 		npm_package_devDependencies_svelte_preprocess: string;
+		npm_package_engines_node: string;
 		npm_config_init_license: string;
 		GTK_MODULES: string;
 		GNOME_SHELL_SESSION_MODE: string;
@@ -273,12 +278,13 @@ declare module '$env/dynamic/private' {
 		npm_package_devDependencies_prettier_plugin_svelte: string;
 		npm_package_scripts_preview: string;
 		INIT_CWD: string;
+		NODE_ENV: string;
 		[key: string]: string | undefined;
 	}
 }
 
 /**
- * Similar to [`$env/dynamic/private`](https://kit.svelte.dev/docs/modules#$env-dynamic-private), but only includes variables that begin with [`config.kit.env.publicPrefix`](https://kit.svelte.dev/docs/configuration#kit-env-publicprefix) (which defaults to `PUBLIC_`), and can therefore safely be exposed to client-side code.
+ * Similar to [`$env/dynamic/private`](https://kit.svelte.dev/docs/modules#$env-dynamic-private), but only includes variables that begin with [`config.kit.env.publicPrefix`](https://kit.svelte.dev/docs/configuration#env) (which defaults to `PUBLIC_`), and can therefore safely be exposed to client-side code.
  * 
  * Note that public dynamic environment variables must all be sent from the server to the client, causing larger network requests — when possible, use `$env/static/public` instead.
  * 

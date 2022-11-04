@@ -2,6 +2,7 @@
 @import "./variables";
 @import "./loading";
 @import "./diurnalCycle";
+
 * {
   margin: 0;
   padding: 0;
@@ -40,93 +41,123 @@ body {
   background-position: center center;
   background-repeat: no-repeat;
   background-size: contain;
+
   &.eletronico {
     background-image: url("../lib/assets/items/eletronico.png");
   }
+
   &.eletronico-1 {
     background-image: url("../lib/assets/items/eletronico-1.png");
   }
+
   &.eletronico-2 {
     background-image: url("../lib/assets/items/eletronico-2.png");
   }
+
   &.eletronico-3 {
     background-image: url("../lib/assets/items/eletronico-3.png");
   }
+
   &.eletronico-4 {
     background-image: url("../lib/assets/items/eletronico-4.png");
   }
+
   &.vidro {
     background-image: url("../lib/assets/items/vidro.png");
   }
+
   &.vidro-1 {
     background-image: url("../lib/assets/items/vidro-1.png");
   }
+
   &.vidro-2 {
     background-image: url("../lib/assets/items/vidro-2.png");
   }
+
   &.vidro-3 {
     background-image: url("../lib/assets/items/vidro-3.png");
   }
+
   &.vidro-4 {
     background-image: url("../lib/assets/items/vidro-4.png");
   }
+
   &.metal {
     background-image: url("../lib/assets/items/metal.png");
   }
+
   &.metal-1 {
     background-image: url("../lib/assets/items/metal-1.png");
   }
+
   &.metal-2 {
     background-image: url("../lib/assets/items/metal-2.png");
   }
+
   &.metal-3 {
     background-image: url("../lib/assets/items/metal-3.png");
   }
+
   &.metal-4 {
     background-image: url("../lib/assets/items/metal-4.png");
   }
+
   &.organico {
     background-image: url("../lib/assets/items/organico.png");
   }
+
   &.organico-1 {
     background-image: url("../lib/assets/items/organico-1.png");
   }
+
   &.organico-2 {
     background-image: url("../lib/assets/items/organico-2.png");
   }
+
   &.organico-3 {
     background-image: url("../lib/assets/items/organico-3.png");
   }
+
   &.organico-4 {
     background-image: url("../lib/assets/items/organico-4.png");
   }
+
   &.papel {
     background-image: url("../lib/assets/items/papel.png");
   }
+
   &.papel-1 {
     background-image: url("../lib/assets/items/papel-1.png");
   }
+
   &.papel-2 {
     background-image: url("../lib/assets/items/papel-2.png");
   }
+
   &.papel-3 {
     background-image: url("../lib/assets/items/papel-3.png");
   }
+
   &.papel-4 {
     background-image: url("../lib/assets/items/papel-4.png");
   }
+
   &.plastico {
     background-image: url("../lib/assets/items/plastico.png");
   }
+
   &.plastico-1 {
     background-image: url("../lib/assets/items/plastico-1.png");
   }
+
   &.plastico-2 {
     background-image: url("../lib/assets/items/plastico-2.png");
   }
+
   &.plastico-3 {
     background-image: url("../lib/assets/items/plastico-3.png");
   }
+
   &.plastico-4 {
     background-image: url("../lib/assets/items/plastico-4.png");
   }
@@ -148,6 +179,7 @@ body {
 .page {
   width: 100%;
   height: 100%;
+
   & .card {
     & .content {
       & .container {
@@ -160,6 +192,7 @@ body {
           height: 4em;
           margin: auto;
         }
+
         &.open {
           & .flip-card-inner {
             transform: rotateY(180deg);
@@ -208,7 +241,7 @@ body {
           transform: rotateY(180deg);
           background-position: center center;
           background-repeat: no-repeat;
-          background-size: contain;
+          background-size: 1.7em;
 
           &.eletronico {
             background-image: url("../lib/assets/items/eletronico.png");
@@ -236,6 +269,7 @@ body {
 
           &.vidro-1 {
             background-image: url("../lib/assets/items/vidro-1.png");
+            background-size: 15%;
           }
 
           &.vidro-2 {
@@ -268,6 +302,7 @@ body {
 
           &.metal-4 {
             background-image: url("../lib/assets/items/metal-4.png");
+
           }
 
           &.organico {
@@ -344,4 +379,303 @@ body {
 
 .mt-1 {
   margin-top: 0.2em;
+}
+
+.arcade-container {
+  .hide {
+    display: none !important;
+    opacity: 0 !important;
+  }
+
+  .drop {
+    width: 50px;
+    height: 50px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 30;
+  }
+
+  .car,
+  .drop {
+    position: absolute;
+    bottom: 100px;
+    margin: auto;
+    background-size: cover;
+  }
+
+  .car {
+    z-index: 1000;
+    background: red;
+    background: url("../lib/assets/images/truck.svg");
+    background-size: cover;
+    width: 50px;
+    height: 100px;
+    transition: 0.02s linear;
+  }
+
+  .container {
+    width: 800px;
+    height: 500px;
+    background-color: white;
+    border-radius: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    overflow: hidden;
+  }
+
+  .container .container-wrapper {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    background-color: rgba(2, 13, 26, 0.616);
+    color: white;
+    transition: 0.3s linear;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    cursor: pointer;
+  }
+
+  .container .container-wrapper h1 {
+    color: blue;
+    text-shadow: 0px 0px 4px rgba(0, 0, 255, 0.452);
+  }
+
+  .most-score {
+    font-size: 20px;
+    color: blue;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 100000;
+  }
+
+  .most-score #score {
+    display: block;
+    color: white;
+    font-size: 22px;
+    transition: 0.3s linear;
+  }
+
+  .container .game-content {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    background: linear-gradient(111.71deg, rgba(0, 255, 102, 0.84) -28.25%, rgba(0, 200, 80, 0.84) 98.02%);
+  }
+
+  .content-game-area {
+    width: 450px;
+    height: 100%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .container #gameArea {
+    width: 100%;
+    height: 100%;
+    background-color: rgb(125, 131, 134);
+    overflow: hidden;
+    position: absolute;
+    border-right: 10px solid rgba(0, 0, 0, 0.171);
+    border-left: 10px solid rgba(0, 0, 0, 0.171);
+    box-sizing: border-box;
+  }
+
+  .line {
+    position: absolute;
+    height: 100px;
+    width: 10px;
+    margin-top: -100px;
+    margin-left: calc(50% - 5px);
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.658);
+  }
+
+  .trash {
+    position: absolute;
+    height: 70px;
+    width: 65px;
+    top: -100px;
+    left: -80px;
+    background-image: url("../lib/assets/images/trash.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 2000;
+  }
+  .trash:nth-child(1) {
+    left: auto;
+    right: -80px;
+  }
+  .trash.anim {
+    animation: a 4s linear infinite;
+  }
+  .trash.anim:nth-child(1) {
+    animation: a 4s 2s linear infinite;
+  }
+  .house {
+    position: absolute;
+    height: 100px;
+    width: 100px;
+    top: -100px;
+    left: -110px;
+    background-image: url("../lib/assets/images/house.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 2000;
+  }
+  .house.anim {
+    animation: a 4s 1s linear infinite;
+  }
+  .house.anim:nth-child(2) {
+    left: auto;
+    right: -120px;
+    animation: a 4s 1s linear infinite;
+  }
+  .house.anim:nth-child(3) {
+    left: auto;
+    right: -120px;
+    animation: a 4s 2s linear infinite;
+  }
+
+  @keyframes a {
+    from {
+      top: -100px;
+    }
+    to {
+      top: 2000px;
+    }
+  }
+
+  .controll-game {
+    z-index: 1000000;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    height: 200px;
+    background-color: rgb(255, 255, 255);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    display: none;
+  }
+
+  .controll-game div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .controll-game button {
+    width: 200px;
+    height: 50px;
+    border-radius: 6px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  @media screen and (max-width: 600px) {
+    .container {
+      width: 100vw;
+      height: calc(100vh - 200px);
+      border-radius: 0px;
+      top: 0px;
+      left: 0px;
+      transform: translate(0px, 0px);
+      padding: 0px;
+    }
+    .container #gameArea {
+      width: 80%;
+      margin: 0px auto;
+      transform: translate(-50%, -50%);
+      left: 50%;
+      top: 50%
+    }
+
+    .controll-game {
+      display: flex;
+      position: fixed;
+      bottom: 0px;
+      left: 0px;
+    }
+  }
+}
+
+/* ARCADE PAGE */
+.nav-items {
+  &.active {
+    position: relative;
+    &::after {
+      content: '';
+      display: block;
+      width: 100%;
+      padding: 0 0.2em;
+      height: 2px;
+      background-color: rgb(var(--primary-color));
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+}
+
+.world-hanks {
+  width: 300px;
+  row-gap: 0.3em;
+  li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    list-style: none;
+    height: 50px;
+    background-color: rgb(var(--primary-color));
+    border-radius: var(--brd-radius);
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0.5em;
+    cursor: url(../lib/assets/cursors/pointer.png), pointer;
+    color: white;
+    &:last-child {
+      margin-bottom: 0.5em;
+    }
+  }
+
+  & p {
+    margin-left: 0.5em;
+    font-size: var(--fs-p);
+    list-style: none;
+    width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: start;
+  }
+
+  & h3 {
+    font-size: var(--fs-h3);
+  }
 }

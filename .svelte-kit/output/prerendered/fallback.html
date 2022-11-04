@@ -3,22 +3,41 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
+    <meta name="theme-color" content="rgb(85, 143, 239)" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="rgb(85, 143, 239)"
+    />
+    <meta name="msapplication-navbutton-color" content="rgb(85, 143, 239)" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="description" content="This is a Calculator" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <link rel="mask-icon" href="/mask-icon.png" color="#FFFFFF" />
     <meta http-equiv="content-security-policy" content="">
-	<link rel="modulepreload" href="/_app/immutable/start-a18efcfa.js">
-	<link rel="modulepreload" href="/_app/immutable/chunks/singletons-bb028f6e.js">
+		<link rel="modulepreload" href="/_app/immutable/start-b5abac4c.js">
+		<link rel="modulepreload" href="/_app/immutable/chunks/index-023448eb.js">
+		<link rel="modulepreload" href="/_app/immutable/chunks/singletons-2acc78c9.js">
+		<script>
+			if ('serviceWorker' in navigator) {
+				addEventListener('load', function () {
+					navigator.serviceWorker.register('/service-worker.js');
+				});
+			}
+		</script>
   </head>
   <body>
     <div id="app">
 		<script type="module" data-sveltekit-hydrate="45h">
-		import { start } from "/_app/immutable/start-a18efcfa.js";
+			import { start } from "/_app/immutable/start-b5abac4c.js";
 
-		start({
-			env: {},
-			hydrate: null,
-			paths: {"base":"","assets":""},
-			target: document.querySelector('[data-sveltekit-hydrate="45h"]').parentNode,
-			trailing_slash: "never"
-		});
-	</script></div>
+			start({
+				env: {},
+				hydrate: null,
+				paths: {"base":"","assets":""},
+				target: document.querySelector('[data-sveltekit-hydrate="45h"]').parentNode,
+				trailing_slash: "never"
+			});
+		</script></div>
   </body>
 </html>

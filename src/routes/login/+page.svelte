@@ -6,33 +6,31 @@
     userProviderID: string;
   };
   import {goto} from "$app/navigation";
-  import {connectionAPI} from "../../stores";
+  import {connectionAPI, loading} from "../../stores";
   import axios from "axios";
   import {
     getAuth,
     GoogleAuthProvider,
     signInWithPopup,
-    FacebookAuthProvider,
     signInAnonymously,
     onAuthStateChanged,
   } from "firebase/auth";
 
   const auth = getAuth();
   const googleProvider = new GoogleAuthProvider();
-  const facebookProvider = new FacebookAuthProvider();
   let userLoaded = false;
   const sendUserForAPI = async (
     userName: string | null | undefined,
     userEmail: string | null | undefined,
     userID: string | null | undefined
-  ): Promise<User | any> => {
+  ): Promise<User> => {
     return await axios
       .post(`${connectionAPI}/handle-user`, {
         userName,
         userEmail,
         userID,
       })
-      .then((response: any) => {
+      .then((response) => {
         return response.data.user;
       })
       .catch(() => false);
@@ -43,15 +41,17 @@
       userLoaded = true;
       return;
     }
-
+    loading.update(() => true)
     if (user.isAnonymous) {
       await goto("/");
     } else {
+
       const userFromAPI = await sendUserForAPI(
         user?.displayName,
         user?.email,
         user?.uid
       );
+      loading.update(() => false)
       if (userFromAPI) {
         await goto("/");
       }
@@ -60,11 +60,6 @@
   // ========== LOGIN METHODS ==========
   const googleLogin = () => {
     signInWithPopup(auth, googleProvider)
-      .then((result) => result.user)
-      .catch(() => false);
-  };
-  const facebookLogin = () => {
-    signInWithPopup(auth, facebookProvider)
       .then((result) => result.user)
       .catch(() => false);
   };
@@ -78,7 +73,7 @@
   <main class="page">
     <div class="card">
       <div class="card__image">
-        <h4>Reciclage Game</h4>
+        <h4>Recicla Game</h4>
         <svg
           width="423"
           height="290"
@@ -1084,8 +1079,8 @@
         <div class="header">
           <h3>Login</h3>
           <p class="mt-1">
-            Participe dos ranks mundiais entrando com uma de suas contas ou acesse
-            rapido pulando o login
+            Participe dos ranks mundiais entrando com uma conta Google ou acesse
+            rapido pulando o login.
           </p>
         </div>
         <div class="content">
@@ -1116,31 +1111,6 @@
             </svg>
             Google
           </button>
-          <button on:click={() => facebookLogin()}>
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M24 12C24 5.3731 18.6268 0 12 0C5.3731 0 0 5.3731 0 12C0 17.989 4.38762 22.9537 10.1252 23.855V15.4696H7.07748V12H10.1252V9.35562C10.1252 6.34842 11.9173 4.68622 14.6579 4.68622C15.9707 4.68622 17.3443 4.92077 17.3443 4.92077V7.87398H15.8307C14.3406 7.87398 13.8748 8.79875 13.8748 9.7488V11.9999H17.2025L16.671 15.4695H13.8747V23.8548C19.6123 22.9553 23.9998 17.9907 23.9998 11.9999L24 12Z"
-                fill="#1977F3"
-              />
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M16.6709 15.4696L17.2026 12H13.8748V9.74888C13.8748 8.8005 14.3389 7.87406 15.8307 7.87406H17.3444V4.92085C17.3444 4.92085 15.9708 4.68628 14.6579 4.68628C11.9174 4.68628 10.1252 6.34685 10.1252 9.3557V12.0001H7.07751V15.4697H10.1252V23.8551C10.7361 23.9511 11.3621 24.0001 12 24.0001C12.6379 24.0001 13.264 23.9494 13.8748 23.8551V15.4697H16.6711L16.6709 15.4696Z"
-                fill="#FEFEFE"
-              />
-            </svg>
-
-            Facebook
-          </button
-          >
         </div>
         <div class="footer">
           <button on:click={() => anonymousLogin()}>
@@ -1178,7 +1148,6 @@
   .page {
     background-color: transparent;
     display: flex;
-
     .card {
       width: 100%;
       height: 500px;
@@ -1189,7 +1158,7 @@
       align-items: center;
       justify-content: center;
       margin: auto;
-      box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
       cursor: url(../../lib/assets/cursors/cursor.png), default;
       @media (max-width: 800px) {
         border-radius: 0;
@@ -1232,10 +1201,6 @@
       &__form {
         width: 50%;
         height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
         background: linear-gradient(146.43deg, #548eee 0.35%, #5b99ff 100%);
         border-radius: 0 var(--brd-radius) var(--brd-radius) 0;
         display: flex;
@@ -1245,16 +1210,10 @@
         @media (max-width: 700px) {
           width: 100%;
           height: 60%;
-          border-top-left-radius: var(--brd-radius);
-          border-top-right-radius: var(--brd-radius);
-          border-bottom-left-radius: 0;
-          border-bottom-right-radius: 0;
+          border-radius: var(--brd-radius) var(--brd-radius) 0 0;
         }
         @media (max-width: 800px) {
-          border-top-left-radius: var(--brd-radius);
-          border-top-right-radius: var(--brd-radius);
-          border-bottom-left-radius: 0;
-          border-bottom-right-radius: 0;
+          border-radius: var(--brd-radius) var(--brd-radius) 0 0;
           justify-content: center;
         }
 
@@ -1301,8 +1260,7 @@
             justify-content: flex-start;
             padding: 0.7em;
             column-gap: 1em;
-            cursor: pointer;
-            cursor: url(../../lib/assets/cursors/pointer.png), default;
+            cursor: url(../../lib/assets/cursors/pointer.png), pointer;
           }
         }
 
@@ -1326,8 +1284,7 @@
             justify-content: space-evenly;
             padding: 0.7em;
             column-gap: 1em;
-            cursor: pointer;
-            cursor: url(../../lib/assets/cursors/pointer.png), default;
+            cursor: url(../../lib/assets/cursors/pointer.png), pointer;
           }
         }
       }

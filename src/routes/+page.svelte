@@ -5,15 +5,11 @@
     isAnonymous: boolean;
     uid: string;
   }
-  type Game = {
-    game: string;
-    displayName: string;
-  }
   import {onMount} from "svelte";
   import {goto} from "$app/navigation";
   import {getAuth, onAuthStateChanged, signOut} from "firebase/auth";
   import axios from "axios";
-  import {connectionAPI, currentGame} from "../stores";
+  import {connectionAPI, isMusic} from "../stores";
   import Cloud from "$lib/Cloud.svelte";
   import Play from "$lib/icons/Play.svelte";
 
@@ -22,9 +18,10 @@
   let urlProfileImageUser = "";
   let displayNameUser = "";
   let scoreLoaded = false;
-  let lastResult = 0;
   let loadedPage = false;
-  let user = '';
+  isMusic.update(() => {
+    return false
+  })
   let points = {
     modality: ['adventure', 'casually', 'arcade'],
     displayName: ['Aventura', 'Casual', 'Arcade'],
@@ -43,15 +40,13 @@
         displayNameUser = 'Anônimo';
         return;
       }
-      user = user;
       loadedPage = true;
       urlProfileImageUser = user.photoURL;
       displayNameUser = user.displayName;
       axios
         .get(`${connectionAPI}/user-results/${points.modality[points.index]}/${user.uid}`)
         .then((response) => {
-          const results = response.data.result[points.modality[points.index]][0].results;
-          points.points = results;
+          points.points = response.data.result[points.modality[points.index]][0].results;
           scoreLoaded = true;
         })
         .catch(() => {
@@ -70,8 +65,12 @@
     const menu = document.querySelector('.right .menu');
     menu.classList.remove("active");
   };
-  const gotoGame = async ({game, displayName}: Game) => {
-    await goto(`${game}/pre-game`)
+  const gotoGame = async (game: string) => {
+    if (game === 'arcade') {
+      await goto(`/${game}`)
+      return
+    }
+    await goto(`/${game}/pre-game`)
   }
   const signOutUser = () => {
     signOut(auth);
@@ -95,8 +94,7 @@
     axios
       .get(`${connectionAPI}/user-results/${points.modality[points.index]}/${auth.currentUser.uid}`)
       .then((response) => {
-        const results = response.data.result[points.modality[points.index]][0].results;
-        points.points = results;
+        points.points = response.data.result[points.modality[points.index]][0].results;
         scoreLoaded = true;
       })
       .catch(() => {
@@ -114,9 +112,7 @@
       <header>
         <div class="profile">
           <!-- svelte-ignore a11y-missing-attribute -->
-          {#if scoreLoaded}
-            <img src={urlProfileImageUser} alt="User self"/>
-          {/if}
+          <img src={urlProfileImageUser} alt="User self"/>
           <ul>
             <li>
               {displayNameUser}
@@ -179,7 +175,9 @@
       </header>
       <main class="content">
         <div class="left">
-          <h4>Melhores Pontuações</h4>
+          <button class="btn-new-game" on:click={() => goto('/ranking')}>
+            Ranking
+          </button>
           <svg
             width="205"
             height="200"
@@ -365,20 +363,6 @@
               </radialGradient>
             </defs>
           </svg>
-          <ul>
-            <li>
-              <p>Anderson</p>
-              <span>52000</span>
-            </li>
-            <li>
-              <p>Julio</p>
-              <span>52000</span>
-            </li>
-            <li>
-              <p>Franklin</p>
-              <span>52000</span>
-            </li>
-          </ul>
         </div>
         <div class="right">
           <div class="menu">
@@ -581,17 +565,40 @@
               </defs>
             </svg>
             <ul>
-              <li on:click={() => gotoGame({game: 'adventure', displayName: 'Aventura'})}>
+              <li on:click={() => gotoGame('adventure')}>
                 <p>Aventura</p>
-                <div class="icon adventure"></div>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon">
+                  <rect x="48" y="80" width="416" height="352" rx="48" ry="48" fill="none" stroke="rgb(255, 255, 255)"
+                        stroke-linejoin="round" stroke-width="32"/>
+                  <circle cx="336" cy="176" r="32" fill="none" stroke="rgb(255, 255, 255)" stroke-miterlimit="10"
+                          stroke-width="32"/>
+                  <path
+                    d="M304 335.79l-90.66-90.49a32 32 0 00-43.87-1.3L48 352M224 432l123.34-123.34a32 32 0 0143.11-2L464 368"
+                    fill="none" stroke="rgb(255, 255, 255)" stroke-linecap="round" stroke-linejoin="round"
+                    stroke-width="32"/>
+                </svg>
               </li>
-              <li on:click={() => gotoGame({game: 'casually', displayName:'Casual'})}>
+              <li on:click={() => gotoGame('casually')}>
                 <p>Casual</p>
-                <div class="icon eventual"></div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 512 512">
+                  <path fill="none" stroke="rgb(255, 255, 255)" stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="32" d="M352 256l-96 224-62-145"/>
+                  <path
+                    d="M299.42 223.48C291.74 239.75 275.18 252 256 252c-13.1 0-27-5-33.63-9.76C216.27 237.87 208 240 208 250v62a24.07 24.07 0 01-24 24h0a24.07 24.07 0 01-24-24v-56h-2c-35.35 0-62-28.65-62-64a64 64 0 0164-64h8v-8a88 88 0 01176 0v8h8a64 64 0 010 128c-21.78 0-42-13-52.59-32.51z"
+                    fill="none" stroke="rgb(255, 255, 255)" stroke-linecap="round" stroke-linejoin="round"
+                    stroke-width="32"/>
+                </svg>
               </li>
-              <li on:click={() => gotoGame({game: 'action', displayName: 'Ação'})}>
-                <p>Ação</p>
-                <div class="icon action"></div>
+              <li on:click={() => gotoGame('arcade')}>
+                <p>Arcade</p>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 512 512">
+                  <path
+                    d="M352.92 80C288 80 256 144 256 144s-32-64-96.92-64c-52.76 0-94.54 44.14-95.08 96.81-1.1 109.33 86.73 187.08 183 252.42a16 16 0 0018 0c96.26-65.34 184.09-143.09 183-252.42-.54-52.67-42.32-96.81-95.08-96.81z"
+                    fill="none" stroke="rgb(255, 255, 255)" stroke-linecap="round" stroke-linejoin="round"
+                    stroke-width="32"/>
+                  <path fill="none" stroke="rgb(255, 255, 255)" stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="32" d="M48 256h112l48-96 48 160 48-96 32 64h128"/>
+                </svg>
               </li>
             </ul>
             <button class="btn-new-game" on:click={(event) => active(event)}>
@@ -603,8 +610,6 @@
     </div>
   </main>
 {/if}
-
-
 <style lang="scss">
   .page {
     background-color: transparent;
@@ -741,8 +746,8 @@
         & .left {
           position: relative;
           display: flex;
-          align-items: center;
-          justify-content: center;
+          align-items: flex-end;
+          justify-content: flex-end;
           flex-direction: column;
           row-gap: 1em;
           @media (max-width: 800px) {
@@ -761,52 +766,22 @@
             height: 170px;
           }
 
-          & h4 {
-            font-size: var(--fs-h4);
-          }
-
-          ul {
+          & button {
+            width: 100%;
+            height: 50px;
+            display: flex;
+            font-size: var(--fs-p);
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(var(--primary-color), 0.5);
+            border-radius: var(--brd-radius);
+            color: rgb(255, 255, 255);
+            padding: 0.5em;
+            z-index: 10000000;
+            cursor: url(../lib/assets/cursors/pointer.png), pointer;
             position: absolute;
             bottom: 0;
             left: 0;
-            width: 100%;
-            height: 170px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            row-gap: 0.3em;
-            flex-direction: column;
-            padding: 0.5em;
-
-            li {
-              width: 100%;
-              height: 50px;
-              background-color: rgba(0, 0, 0, 0.1);
-              border-radius: var(--brd-radius);
-              display: flex;
-              padding: 0.5em;
-              align-items: flex-start;
-              justify-content: center;
-              flex-direction: column;
-              cursor: url(../lib/assets/cursors/pointer.png), pointer;
-              backdrop-filter: blur(62px);
-
-              &:nth-child(2) {
-                transform: translateX(50px);
-              }
-
-              &:nth-child(3) {
-                transform: translate(120px);
-              }
-
-              & p {
-                font-size: var(--fs-p);
-              }
-
-              & span {
-                font-size: 0.5em;
-              }
-            }
           }
         }
 
@@ -858,7 +833,6 @@
                   animation-delay: 200ms;
 
                   & svg {
-                    left: initial;
                     right: 0;
                   }
 
@@ -881,8 +855,7 @@
                   animation: expand linear 200ms forwards;
                   animation-delay: 200ms;
 
-                  & .icon {
-                    left: initial;
+                  & svg {
                     right: 0;
                   }
 
@@ -926,29 +899,14 @@
                 font-size: var(--fs-p);
                 overflow: hidden;
                 cursor: url(../lib/assets/cursors/pointer.png), pointer;
-                backdrop-filter: blur(62px);
 
-                & .icon {
-                  width: 35px;
-                  height: 35px;
-                  background-position: center center;
-                  background-repeat: no-repeat;
-                  background-size: contain;
+                & svg {
+                  width: 30px;
+                  height: 30px;
                   position: absolute;
-                  left: 50%;
+                  right: 50%;
                   transform: translateX(-50%);
-
-                  &.adventure {
-                    background-image: url("https://firebasestorage.googleapis.com/v0/b/reciclage-game-416af.appspot.com/o/icons%2Fadventure.png?alt=media&token=879df8a7-0ffb-4e2a-9853-73ef3851a5c7");
-                  }
-
-                  &.eventual {
-                    background-image: url("https://firebasestorage.googleapis.com/v0/b/reciclage-game-416af.appspot.com/o/icons%2Fdice.png?alt=media&token=bf204161-731d-4890-9453-65eb4768f835");
-                  }
-
-                  &.action {
-                    background-image: url("https://firebasestorage.googleapis.com/v0/b/reciclage-game-416af.appspot.com/o/icons%2Ftruck.png?alt=media&token=d0b0eaf4-1ee0-4e61-b5e1-a435ac1c4193");
-                  }
+                  transition: right linear 200ms;
                 }
 
                 & p {
@@ -972,7 +930,6 @@
               padding: 0.5em;
               z-index: 10000000;
               cursor: url(../lib/assets/cursors/pointer.png), pointer;
-              backdrop-filter: blur(62px);
             }
           }
         }

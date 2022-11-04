@@ -1,0 +1,1 @@
+.cloud.svelte-kkhqce{position:absolute;top:50px;left:-120%;transition:translateX(-50%);animation:svelte-kkhqce-cloud 10s linear 0s forwards infinite;will-change:left}@media (max-width: 800px){.cloud.svelte-kkhqce{animation:none}}@media (max-width: 700px){.cloud.svelte-kkhqce{animation:none}}@keyframes svelte-kkhqce-cloud{0%{left:-1000px}to{left:100%}}

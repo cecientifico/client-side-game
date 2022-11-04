@@ -2,30 +2,35 @@
   import "../styles/global.scss";
   import {onMount} from "svelte";
   import {goto} from "$app/navigation";
-  import {firebaseConfig, musics, isMusic} from "../stores";
+  import {firebaseConfig, isMusic, loading, musics} from "../stores";
   import {initializeApp} from "firebase/app";
   import {getAnalytics} from "firebase/analytics";
   import {getAuth, onAuthStateChanged} from "firebase/auth";
   import Loading from "../lib/Loading.svelte";
 
   let isLoading = true;
+
+  $: loading.subscribe((value) => {
+    isLoading = value;
+  })
+
+
   const app = initializeApp(firebaseConfig);
   const auth = getAuth();
   let loadingAudio = false;
   onMount(async () => {
     $: isMusic.subscribe( async(value) => {
-      const audio = document.querySelector('audio.sound-background')!;
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const audio = document.querySelector<HTMLAudioElement>('audio.sound-background')!;
       if (value) {
-        const index = Math.round(Math.random() * 9);
-        musics.index = index
+        musics.index = Math.round(Math.random() * 9)
         audio.src = musics.musics[musics.index];
         audio.load();
         loadingAudio= true;
         await audio.play();
         loadingAudio = false;
         audio.onended = async() => {
-          const index = Math.round(Math.random() * 9);
-          musics.index = index
+          musics.index = Math.round(Math.random() * 9)
           audio.src = musics.musics[musics.index];
           audio.load();
           loadingAudio= true;
@@ -37,7 +42,7 @@
         audio.pause()
       }
     })
-    isLoading = false;
+    loading.update(() => false);
     const analytics = getAnalytics(app);
     onAuthStateChanged(auth, (user) => {
       if (!user) {
@@ -63,7 +68,8 @@
   <Loading {isLoading}/>
 </main>
 {#if !isLoading}
-  <slot/>
+    <slot />
+
 {/if}
 
 <style lang="scss">

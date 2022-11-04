@@ -1,5 +1,5 @@
 <script lang="ts">
-  import {beforeNavigate} from "$app/navigation";
+  import {afterNavigate, beforeNavigate} from "$app/navigation";
   import {getAuth} from "firebase/auth";
 
   type Matches = {
@@ -11,7 +11,7 @@
   import Overlay from "$lib/Overlay.svelte";
   import Modal from "$lib/Modal.svelte";
   import axios from "axios";
-
+  let timetest = 0;
   let items = [];
   let time = 3;
   let isGaming = false;
@@ -33,6 +33,14 @@
     isMusic.update(value => {
       return false
     })
+
+  })
+  afterNavigate(() => {
+    clearTimeout(timetest);
+    isGaming = false;
+    isMusic.update(value => {
+      return false
+    })
   })
   currentGame.subscribe(value => {
     trashsFromStores.push(value)
@@ -44,7 +52,7 @@
     }
   })
   const countdown = () => {
-    setTimeout(() => {
+    timetest = setTimeout(() => {
       time--;
       if (time > 0) {
         countdown();
@@ -59,7 +67,7 @@
     }, 1000);
   };
   const initTime = () => {
-    setTimeout(() => {
+    timetest = setTimeout(() => {
       time++;
       if(maches.length === 10) {
         isGaming = false;
@@ -166,6 +174,11 @@
       });
       if (index === 19) {
         setTimeout(() => {
+            const flipCard = document.querySelectorAll(".container");
+            flipCard.forEach((item) => {
+              item.classList.add("open");
+            });
+            isGaming = true;
             countdown();
           },
           1000);

@@ -1,10 +1,6 @@
 <script lang="ts">
-  type Game = {
-    game: string;
-    data: any;
-  }
   import {currentGame} from '../../../stores';
-  import {goto,beforeNavigate, afterNavigate} from "$app/navigation";
+  import {goto} from "$app/navigation";
   import Cloud from "$lib/Cloud.svelte";
   import Music from "$lib/Music.svelte";
 
@@ -40,7 +36,7 @@
   const confirmGameMemory = () => {
     goto('/adventure');
 
-    currentGame.update(value => {
+    currentGame.update(() => {
       return {
         game: 'adventure',
         data: {
@@ -51,8 +47,9 @@
   }
 </script>
 <main class="page">
-  <div class="card">
+  <div class="card diurnal">
     <Cloud/>
+    <div class="sun-and-moon"></div>
     <div class="container">
       <header>
         <h3>O que vamos coletar hoje?</h3>
@@ -318,7 +315,6 @@
           justify-content: center;
           flex-direction: column;
           padding: 0.5em;
-          color: rgb(var(--text-secondary));
 
           & h3 {
             font-size: var(--fs-h3);
@@ -364,7 +360,6 @@
                 outline: none;
                 transition: background-color linear 200ms;
                 cursor: url(../../../lib/assets/cursors/pointer.png), pointer;
-                backdrop-filter: blur(62px);
                 &:disabled {
                   background-color: rgba(var(--primary-color), 0.5);
                 }

@@ -1,4 +1,4 @@
-import { writable } from "svelte/store";
+import {writable} from "svelte/store";
 
 export const firebaseConfig = {
   apiKey: "AIzaSyC61tYlJA9lrS5_qfJKSaVpW8CpLWaCcFo",
@@ -9,6 +9,8 @@ export const firebaseConfig = {
   appId: "1:766413579133:web:c1a6f325721afeb10ea214",
   measurementId: "G-J4GJ778B27",
 };
+
+export const loading = writable(true);
 
 export const currentGame = writable({
   game: '',
@@ -75,7 +77,7 @@ export const trashItemsToMemory = {
   },
 };
 export const connectionAPI = "https://backend-rg-game.herokuapp.com";
-
+// export const connectionAPI = "http://localhost:3000";
 export const musics = {
   musics: [
     'https://firebasestorage.googleapis.com/v0/b/reciclage-game-416af.appspot.com/o/background_musics%2Fmusic.mp3?alt=media&token=4979e8f9-7061-48d7-b2b3-04d2e0e0a108',
